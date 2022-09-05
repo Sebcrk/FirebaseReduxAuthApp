@@ -1,11 +1,9 @@
 import { useState } from "react";
-const { handleSubmit, control } = useForm();
-
+import { useForm } from "react-hook-form";
 
 import Avatar from "@mui/material/Avatar";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
@@ -16,27 +14,37 @@ import Container from "@mui/material/Container";
 
 import InputText from "../../components/UI/InputText";
 
+const dataArray = [
+  { name: "First Name", sm: 6, type: "text" },
+  { name: "Last Name", sm: 6, type: "text" },
+  { name: "ID", sm: 6, type: "number" },
+  { name: "Date of birth", sm: 6, type: "date" },
+  // { name: "Gender", sm: 6, type: "select" },
+  { name: "Email", sm: 12, type: "email" },
+  { name: "Password", sm: 12, type: "password" },
+];
 
 export default function AddUser() {
   const [isLoading, setIsloading] = useState(false);
-    
+  const [admin, setAdmin] = useState(false);
+  const { handleSubmit, control } = useForm();
 
-  const handleSubmit = (event) => {
+  const addUserHandler = (data, event) => {
     event.preventDefault();
     setIsloading(true);
 
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    console.log({...data, isAdmin: admin});
     setIsloading(false);
-    event.target.reset()
-
+    event.target.reset();
   };
 
+  const checkHandler = (event) => {
+    setAdmin(event.target.checked);
+  };
+  
+
   return (
-    <Container  component="main" maxWidth="xs">
+    <Container component="main" maxWidth="xs">
       <CssBaseline />
       <Box
         sx={{
@@ -46,59 +54,43 @@ export default function AddUser() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Create New User
         </Typography>
-        <Box noValidate component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                autoComplete="given-name"
-                name="firstName"
-                required
-                fullWidth
-                id="firstName"
-                label="First Name"
-                autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="family-name"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="new-password"
-              />
-            </Grid>
+
+        {/* CHANGE THE NOVALIDATE PROPERTY */}
+        <Box
+          noValidate
+          component="form"
+          onSubmit={handleSubmit(addUserHandler)}
+          sx={{ mt: 3 }}
+        >
+          <Grid container spacing={1} rowSpacing={0.1}>
+            {dataArray.map((data) => {
+              return (
+                <Grid key={data.name} item xs={12} sm={data.sm}>
+                  <InputText
+                    control={control}
+                    name={data.name}
+                    type={data.type}
+                    fullWidth
+                    required
+                  />
+                </Grid>
+              );
+            })}
             <Grid item xs={12}>
               <FormControlLabel
-                control={<Checkbox value="makeAdmin" color="primary" />}
+                control={
+                  <Checkbox
+                    checked={admin}
+                    onChange={checkHandler}
+                    color="success"
+                  />
+                }
                 label="Make Admin"
               />
             </Grid>

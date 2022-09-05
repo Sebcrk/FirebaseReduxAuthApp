@@ -83,7 +83,8 @@ function ResetPassword() {
         >
           <InputText
             control={control}
-            inputType="Email"
+            name="Email"
+            type="email"
             autoFocus
             fullWidth
             required
