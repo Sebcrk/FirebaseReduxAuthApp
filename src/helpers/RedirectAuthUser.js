@@ -1,0 +1,22 @@
+import { Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+// Check if user is authenticated to prevent access to
+// Login/Reset Password routes
+
+const RedirectAuthUser = (props) => {
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const accessToken = useSelector((state) => state.auth.token);
+
+  if (!isAuthenticated || accessToken === null) {
+    return <props.route />;
+  } else {
+    console.log(
+      "Authenticated users don't have access to this route. Redirecting to /"
+    );
+
+    return <Navigate to="/" />;
+  }
+};
+
+export default RedirectAuthUser;

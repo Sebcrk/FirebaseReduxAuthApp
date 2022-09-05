@@ -1,0 +1,41 @@
+
+
+.logo {
+  font-size: 2rem;
+  color: white;
+}
+
+.nav ul {
+  list-style: none;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.nav li {
+  margin-left: 1.5rem;
+  font-size: 1.25rem;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #88dfdf;
+}
+.nav button {
+  /* text-decoration: none; */
+  color: #88dfdf;
+  background-color: inherit;
+  /* border-radius: 4px; */
+  font-size: 1.25rem;
+  padding: 0;
+  border: 1px solid teal;
+  cursor: pointer;
+}
+
+.nav a:hover,
+.nav a:active,
+.nav button:hover,
+.nav button.active {
+  color: #e6fcfc;
+}
+
