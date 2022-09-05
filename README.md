@@ -30,7 +30,7 @@ npm install
 ## Usage
 
 To run the app.
-```js
+```shell
 npm start
 ```
 
