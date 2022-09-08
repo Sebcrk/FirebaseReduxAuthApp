@@ -8,7 +8,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import RedirectAuthUser from "./helpers/RedirectAuthUser";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
 import Counter from "./routes/counter/Counter";
-import SignIn from "./routes/signin/SignIn";
+import SignIn from "./routes/SignIn/SignIn";
 import ResetPassword from "./routes/ResetPassword";
 
 const UserProfile = lazy(() => import("./routes/UserProfile"));

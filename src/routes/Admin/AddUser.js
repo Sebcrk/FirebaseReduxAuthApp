@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { functions } from "../../firebase";
+import { httpsCallable } from "firebase/functions";
 
 import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -27,21 +29,38 @@ const dataArray = [
 export default function AddUser() {
   const [isLoading, setIsloading] = useState(false);
   const [admin, setAdmin] = useState(false);
-  const { handleSubmit, control } = useForm();
+  const { handleSubmit, control, reset } = useForm();
 
-  const addUserHandler = (data, event) => {
-    event.preventDefault();
+  const resetForm = () => {
+    reset();
+    setAdmin(false);
+    setIsloading(false);
+  };
+
+  const addUserHandler = (data, e) => {
+    e.preventDefault();
     setIsloading(true);
 
-    console.log({...data, isAdmin: admin});
-    setIsloading(false);
-    event.target.reset();
+    console.log({ ...data, isAdmin: admin });
+
+    // Cloud Function
+    const createNewUser = httpsCallable(functions, "createNewUser");
+    createNewUser({ ...data, isAdmin: admin })
+      .then((result) => {
+        console.log(result);
+        console.log(result.data);
+        alert(result.data);
+        resetForm();
+      })
+      .catch((error) => {
+        alert(error.message);
+        setIsloading(false);
+      });
   };
 
   const checkHandler = (event) => {
     setAdmin(event.target.checked);
   };
-  
 
   return (
     <Container component="main" maxWidth="xs">

@@ -27,6 +27,7 @@ export default function SignIn() {
   const dispatch = useDispatch();
 
   const loginHandler = async (data, event) => {
+   try {
     event.preventDefault();
     setIsloading(true);
     console.log("Signing in");
@@ -40,6 +41,10 @@ export default function SignIn() {
     navigate("/", { replace: true });
     console.log("Signed in");
     setIsloading(false);
+   } catch (error ) {
+    alert(error.message)
+    setIsloading(false);
+   }
   };
 
   return (

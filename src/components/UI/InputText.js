@@ -4,7 +4,7 @@ import { Controller } from "react-hook-form";
 
 function InputText(props) {
   const { control, name, type, autoFocus, required, fullWidth } = props
-  const finalName = name.replaceAll(" ", "-")
+  const finalName = name.replaceAll(" ", "_")
   return (
     <Controller
       name={finalName.toLowerCase()}
