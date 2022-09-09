@@ -42,23 +42,22 @@ export default function AddUser() {
     setIsloading(true);
 
     console.log({ ...data, isAdmin: admin });
-
     // Cloud Function
-    const createNewUser = httpsCallable(functions, "createNewUser");
-    createNewUser({ ...data, isAdmin: admin })
+    const createUser = httpsCallable(functions, "createUser");
+    createUser({ ...data, isAdmin: admin })
       .then((result) => {
-        console.log(result);
         console.log(result.data);
         alert(result.data);
         resetForm();
       })
       .catch((error) => {
-        alert(error.message);
         setIsloading(false);
+
+        alert(error.message);
       });
   };
 
-  const checkHandler = (event) => {
+  const adminCheckHandler = (event) => {
     setAdmin(event.target.checked);
   };
 
@@ -82,7 +81,6 @@ export default function AddUser() {
 
         {/* CHANGE THE NOVALIDATE PROPERTY */}
         <Box
-          noValidate
           component="form"
           onSubmit={handleSubmit(addUserHandler)}
           sx={{ mt: 3 }}
@@ -101,23 +99,37 @@ export default function AddUser() {
                 </Grid>
               );
             })}
-            <Grid item xs={12}>
+            <Grid item xs={6} sm={6}>
               <FormControlLabel
+                labelPlacement="top"
                 control={
                   <Checkbox
                     checked={admin}
-                    onChange={checkHandler}
+                    onChange={adminCheckHandler}
                     color="success"
                   />
                 }
                 label="Make Admin"
               />
             </Grid>
+            {admin && (
+              <Grid item xs={6} sm={6}>
+                <InputText
+                  control={control}
+                  name="Access Level"
+                  type="number"
+                  required
+                  InputProps={{ inputProps: { min: "1", max: "5", step: "1" } }}
+                  fullWidth
+                  size="small"
+                />
+              </Grid>
+            )}
           </Grid>
+
           <LoadingButton
             type="submit"
             loading={isLoading}
-            loadingIndicator="Creating new user.."
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}

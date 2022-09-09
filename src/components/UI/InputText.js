@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import { Controller } from "react-hook-form";
 
 function InputText(props) {
-  const { control, name, type, autoFocus, required, fullWidth } = props
+  const {size, InputProps, control, name, type, autoFocus, required, fullWidth } = props
   const finalName = name.replaceAll(" ", "_")
   return (
     <Controller
@@ -20,7 +20,9 @@ function InputText(props) {
           type={type}
           id={name.toLowerCase()}
           autoFocus={autoFocus}
+          InputProps={InputProps}
           InputLabelProps={{ shrink: true  } }
+          size={size}
         />
       )}
     />
