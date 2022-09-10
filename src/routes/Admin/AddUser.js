@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { functions } from "../../firebase";
+import { db, functions } from "../../firebase";
 import { httpsCallable } from "firebase/functions";
 
 import Avatar from "@mui/material/Avatar";
@@ -49,6 +49,7 @@ export default function AddUser() {
 
     setSnackBar({ open: false });
   };
+
   const resetForm = () => {
     reset();
     setAdmin(false);
@@ -63,18 +64,36 @@ export default function AddUser() {
     // Cloud Function
     const createUser = httpsCallable(functions, "createUser");
     createUser({ ...data, isAdmin: admin })
-      .then((result) => {
-        console.log(result.data);
-        // alert(result.data);
-        setSnackBar({ open: true, message: result.data, severity: "success" });
-        resetForm();
+      .then(() => {
+        setSnackBar({
+          open: true,
+          message: `User ${data.email} has been created`,
+          severity: "success",
+        });
+        const addUserToDB = httpsCallable(functions, "addUserToDB");
+        addUserToDB({ ...data, isAdmin: admin })
+          .then(() => {
+            setSnackBar({
+              open: true,
+              message: `User ${data.email} has been added to the database`,
+              severity: "success",
+            });
+            resetForm();
+          })
+          .catch((error) => {
+            setIsloading(false);
+            console.log(error.message);
+            setSnackBar({
+              open: true,
+              message: error.message,
+              severity: "error",
+            });
+          });
       })
       .catch((error) => {
         setIsloading(false);
+        console.log(error.message);
         setSnackBar({ open: true, message: error.message, severity: "error" });
-
-
-        // alert(error.message);
       });
   };
 
@@ -102,6 +121,7 @@ export default function AddUser() {
 
         {/* CHANGE THE NOVALIDATE PROPERTY */}
         <Box
+          noValidate
           component="form"
           onSubmit={handleSubmit(addUserHandler)}
           sx={{ mt: 3 }}
@@ -161,7 +181,7 @@ export default function AddUser() {
       </Box>
       <Snackbar
         open={snackBar.open}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={snackBarCloseHandler}
       >
         <Alert

@@ -24,16 +24,13 @@ admin.initializeApp();
 // });
 
 exports.createUser = functions.https.onCall((data, context) => {
-  if (context.auth.token.isAdmin !== true) {
+  if (context.auth.token.isAdmin !== true && context.auth.token.accessLevel > 2) {
     throw new functions.https.HttpsError(
       "failed-precondition",
-      "Denied! Only Admins can create new users"
+      "Denied! Only high-level Admins can create new users"
     );
   }
 
-  // ERRORS ARE NOT BEING SENT BACK TO THE CLIENT
-  // ERRORS ARE NOT BEING SENT BACK TO THE CLIENT
-  // ERRORS ARE NOT BEING SENT BACK TO THE CLIENT
   return (
     admin
       .auth()
@@ -64,19 +61,31 @@ exports.createUser = functions.https.onCall((data, context) => {
       .then((user) => {
         admin.auth().setCustomUserClaims(user.uid, { isAdmin: data.isAdmin, accessLevel: data.access_level });
       })
-      .catch((error) => {
-  // THIS CATCH IS NOT RETURNING THE ERROR
-
+      .catch((error) => { 
         throw new functions.https.HttpsError(
           "failed-precondition",
           error.message
         );
-      }),
+      })    
+  );
+});
+
+
+
+exports.addUserToDB = functions.https.onCall((data, context) => {
+  if (context.auth.token.isAdmin !== true && context.auth.token.accessLevel > 2) {
+    throw new functions.https.HttpsError(
+      "failed-precondition",
+      "Denied! Only high-level Admins can add new users to the database"
+    );
+  }
+
+  return (
     admin
       .firestore()
       .collection("users")
       .doc(data.id)
-      .set({
+      .create({
         firstName: data.first_name
           .toUpperCase()
           .normalize("NFD")
@@ -105,7 +114,6 @@ exports.createUser = functions.https.onCall((data, context) => {
           "failed-precondition",
           error.message
         );
-      }),
-      `User ${data.email} has been created`
-  );
-});
+      })
+  )
+})

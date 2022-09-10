@@ -33,7 +33,13 @@ const routesArray = [
   { url: "guests/schedule", comp: Schedule, protected: true },
   { url: "guests/map", comp: Map, protected: true },
   { url: "guests/reports", comp: Reports, protected: true },
-  { url: "admin/search", comp: AdminSearch, protected: true },
+  {
+    url: "admin/search",
+    comp: AdminSearch,
+    protected: true,
+    admin: true,
+    accessLevel: 1,
+  },
   {
     url: "admin/add",
     comp: AddUser,
@@ -67,8 +73,6 @@ const routesArray = [
 ];
 
 const RoutesComp = () => {
-
-
   return (
     <Suspense
       fallback={
@@ -87,7 +91,10 @@ const RoutesComp = () => {
                   key={route.url}
                   path={route.url}
                   element={
-                    <ProtectedRoute adminRoute={route.admin}>
+                    <ProtectedRoute
+                      routeAccessLevel={route.accessLevel}
+                      adminRoute={route.admin}
+                    >
                       <RouteComp />
                     </ProtectedRoute>
                   }
@@ -99,7 +106,7 @@ const RoutesComp = () => {
                 key={route.url}
                 path={route.url}
                 element={
-                  <ProtectedRoute >
+                  <ProtectedRoute>
                     <RouteComp />
                   </ProtectedRoute>
                 }

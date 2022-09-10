@@ -5,7 +5,7 @@ import { auth } from "../../firebase";
 import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import { persistor } from "../../store";
-
+import { useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -20,6 +20,7 @@ import Logout from '@mui/icons-material/Logout';
 
 
 function MenuComp() {
+  const user = useSelector(state => state.auth.user)
 const [anchorEl, setAnchorEl] = React.useState(null);
     const dispatch = useDispatch();
     // let navigate = useNavigate();
@@ -46,6 +47,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const splitter = user.displayName.split(' ')
   return (
     <>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -58,7 +60,7 @@ const [anchorEl, setAnchorEl] = React.useState(null);
           aria-expanded={open ? "true" : undefined}
         >
             {/* USER INITIALS SHOULD BE ASSIGNED IN THE AVATAR COMP */}
-          <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+          <Avatar sx={{ width: 38, height: 38 }}>{splitter[0][0] + splitter[1][0]}</Avatar>
         </IconButton>
       </Box>
       <Menu

@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, forwardRef } from "react";
 import { sendPasswordResetEmail } from "firebase/auth";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { auth } from "../firebase";
 
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,14 +13,33 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
-import { auth } from "../firebase";
 
 import InputText from "../components/UI/InputText";
 
+
+const Alert = forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+
 function ResetPassword() {
   const { handleSubmit, control } = useForm();
-  let navigate = useNavigate();
   const [isLoading, setIsloading] = useState(false);
+  const [snackBar, setSnackBar] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
+
+
+  const snackBarCloseHandler = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackBar({ open: false });
+  };
+
 
   const resetPasswordHandler = async (data, event) => {
     event.preventDefault();
@@ -27,32 +48,34 @@ function ResetPassword() {
       .then(() => {
         // Password reset email sent!
         // ..
+        setSnackBar({ open: true, message: "Password recovery email sent to: " + data.email, severity: "success" });
         console.log("Password recovery email sent to: " + data.email);
-        alert(`Password recovey email sent to: ${data.email}`);
-        navigate("/signin", { replace: true });
       })
       .catch((error) => {
+        let errorMessage
         switch (error.code) {
           case "auth/invalid-email": {
-            alert("Email address is invalid. Check and try again");
+            errorMessage = "Email address is invalid. Check and try again";
             break;
           }
           case "auth/user-disabled": {
-            alert("User related to the email address is disabled");
+            errorMessage = "User related to the email address is disabled";
             break;
           }
           case "auth/user-not-found": {
-            alert("Email address does not have a user related");
+            errorMessage = "Email address does not have a user related";
             break;
           }
           case "auth/too-many-requests": {
-            alert("Too many attempts made. Try again later");
+            errorMessage = "Too many attempts made. Try again later";
             break;
           }
           default:
-            alert("Something bad happened");
+            errorMessage = "Something bad happened";
         }
+        setSnackBar({ open: true, message: errorMessage, severity: "error" });
       });
+
     setIsloading(false);
   };
 
@@ -102,6 +125,19 @@ function ResetPassword() {
           </LoadingButton>
         </Box>
       </Box>
+      <Snackbar
+        open={snackBar.open}
+        autoHideDuration={6000}
+        onClose={snackBarCloseHandler}
+      >
+        <Alert
+          onClose={snackBarCloseHandler}
+          severity={snackBar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackBar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

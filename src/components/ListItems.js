@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import Collapse from "@mui/material/Collapse";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -62,26 +63,31 @@ const adminNavigationItems = [
     text: "User Search",
     url: "/admin/search",
     icon: <SearchIcon />,
+    accessLevel: 1
   },
   {
     text: "Add User",
     url: "/admin/add",
     icon: <PersonAddIcon />,
+    accessLevel: 2
   },
   {
     text: "Edit User",
     url: "/admin/edit",
     icon: <TuneIcon />,
+    accessLevel: 1
   },
   {
     text: "Delete User",
     url: "/admin/delete",
     icon: <PersonRemoveIcon />,
+    accessLevel: 2
   },
   {
     text: "Ban Guests",
     url: "/admin/ban",
     icon: <BlockIcon />,
+    accessLevel: 3
   },
 ];
 
@@ -132,6 +138,7 @@ export const MainListItems = (props) => {
 };
 
 export const AdminListItems = (props) => {
+  const user = useSelector(state => state.auth.user)
   const [openAdminCollapse, setOpenAdminCollapse] = useState(false);
 
   const adminCollapseHandler = () => {
@@ -148,6 +155,9 @@ export const AdminListItems = (props) => {
       </ListItemButton>
       <Collapse in={openAdminCollapse} timeout="auto" unmountOnExit>
         {adminNavigationItems.map((item) => {
+          if (user.accessLevel < item.accessLevel) {
+            return 
+          }
           return (
             <ListItemButton key={item.text} onClick={props.onToggleDrawer(false)} component={Link} to={item.url}>
               <ListItemIcon>{item.icon}</ListItemIcon>
