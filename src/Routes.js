@@ -34,35 +34,40 @@ const routesArray = [
   { url: "guests/map", comp: Map, protected: true },
   { url: "guests/reports", comp: Reports, protected: true },
   { url: "admin/search", comp: AdminSearch, protected: true },
-  { url: "admin/add", comp: AddUser, protected: true },
-  { url: "admin/edit", comp: EditUser, protected: true },
-  { url: "admin/delete", comp: DeleteUser, protected: true },
-  { url: "admin/ban", comp: BanGuests, protected: true },
+  {
+    url: "admin/add",
+    comp: AddUser,
+    protected: true,
+    admin: true,
+    accessLevel: 2,
+  },
+  {
+    url: "admin/edit",
+    comp: EditUser,
+    protected: true,
+    admin: true,
+    accessLevel: 1,
+  },
+  {
+    url: "admin/delete",
+    comp: DeleteUser,
+    protected: true,
+    admin: true,
+    accessLevel: 2,
+  },
+  {
+    url: "admin/ban",
+    comp: BanGuests,
+    protected: true,
+    admin: true,
+    accessLevel: 3,
+  },
   { url: "*", comp: NotFound, protected: false },
   { url: "counter", comp: Counter, protected: false },
 ];
 
 const RoutesComp = () => {
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const accessToken = useSelector((state) => state.auth.token);
 
-  useEffect(() => {
-    const unsuscribe = onAuthStateChanged(auth, (userData) => {
-      if (userData) {
-        if (userData.accessToken === accessToken) {
-          console.log("Route says it's a valid token");
-        } else {
-          console.log("Route says it's an invalid token");
-        }
-
-        // ...
-      }
-    });
-
-    return () => {
-      unsuscribe();
-    };
-  }, []);
 
   return (
     <Suspense
@@ -76,42 +81,41 @@ const RoutesComp = () => {
         {routesArray.map((route) => {
           const RouteComp = route.comp;
           if (route.protected) {
+            if (route.admin) {
+              return (
+                <Route
+                  key={route.url}
+                  path={route.url}
+                  element={
+                    <ProtectedRoute adminRoute={route.admin}>
+                      <RouteComp />
+                    </ProtectedRoute>
+                  }
+                />
+              );
+            }
             return (
               <Route
                 key={route.url}
                 path={route.url}
                 element={
-                  <ProtectedRoute>
+                  <ProtectedRoute >
                     <RouteComp />
                   </ProtectedRoute>
                 }
               />
             );
+          } else {
+            return (
+              <Route key={route.url} path={route.url} element={<RouteComp />} />
+            );
           }
-          return (
-            <Route key={route.url} path={route.url} element={<RouteComp />} />
-          );
         })}
-
-        {/* REVISAR ESTO */}
-        {/* REVISAR ESTO */}
-        {/* REVISAR ESTO */}
-        {/* REVISAR ESTO */}
-        {/* REVISAR ESTO */}
-        <Route
-          path="/signin"
-          element={
-          
-              <RedirectAuthUser route={SignIn} />}
-          
-          />
+        <Route path="/signin" element={<RedirectAuthUser route={SignIn} />} />
         <Route
           path="/resetpassword"
-          element={
-          
-              <RedirectAuthUser route={ResetPassword} />}
-          
-          />
+          element={<RedirectAuthUser route={ResetPassword} />}
+        />
         {/* <Route
           path="/resetpassword"
           element={
@@ -129,5 +133,3 @@ const RoutesComp = () => {
 };
 
 export default RoutesComp;
-
-
