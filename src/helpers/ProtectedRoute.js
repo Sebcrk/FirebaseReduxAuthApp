@@ -1,8 +1,5 @@
 import { Navigate } from "react-router-dom";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase";
 
 export default function ProtectedRoute(props) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);

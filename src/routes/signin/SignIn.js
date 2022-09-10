@@ -24,7 +24,6 @@ export default function SignIn() {
   const { handleSubmit, control } = useForm();
   let navigate = useNavigate();
   const [isLoading, setIsloading] = useState(false);
-  const dispatch = useDispatch();
 
   const loginHandler = async (data, event) => {
    try {

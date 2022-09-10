@@ -6,17 +6,13 @@ import { authActions } from "./store/auth-slice";
 import Layout from "./components/layout/Layout";
 import RoutesComp from "./Routes";
 
-// WORKING ON UPDATING USER DATA FROM ONAUTHSTATECHANGED
-// ONCE USER SIGNS IN. CURRENT LOGIC ONLY WORKS AFTER
-// PAGE IS RELOADED.
+
 
 function App() {
   const [isAdmin, setIsAdmin] = useState(false);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.auth.user);
   console.log(user);
-  // connectFunctionsEmulator(functions, "localhost", 5001);
-
   useEffect(() => {
     onAuthStateChanged(auth, (userData) => {
       if (userData) {
