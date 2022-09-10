@@ -36,12 +36,12 @@ export default function SignIn() {
       data.email,
       data.password
     );
-    const { accessToken, email } = loginData.user;
-    dispatch(authActions.login({ user: email, token: accessToken }));
+    console.log(loginData);
     navigate("/", { replace: true });
-    console.log("Signed in");
+    console.log("Signed in: " + loginData);
     setIsloading(false);
-   } catch (error ) {
+   } 
+   catch (error ) {
     alert(error.message)
     setIsloading(false);
    }

@@ -18,6 +18,7 @@ import IconButton from "@mui/material/IconButton";
 
 const Layout = (props) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.user);
   const accessToken = useSelector((state) => state.auth.token);
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -81,7 +82,7 @@ const Layout = (props) => {
           </Toolbar>
         </AppBar>
         {isAuth && (
-          <TemporaryDrawer isOpen={openDrawer} toggleDrawer={toggleDrawer} />
+          <TemporaryDrawer admin={props.admin} isOpen={openDrawer} toggleDrawer={toggleDrawer} />
           // <DrawerComponent onOpen={open} onToggleDrawer={toggleDrawer2} />
         )}
 

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { functions } from "../../firebase";
 import { httpsCallable } from "firebase/functions";
@@ -13,6 +13,8 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 
 import InputText from "../../components/UI/InputText";
 
@@ -26,19 +28,35 @@ const dataArray = [
   { name: "Password", sm: 12, type: "password" },
 ];
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 export default function AddUser() {
   const [isLoading, setIsloading] = useState(false);
   const [admin, setAdmin] = useState(false);
+  const [snackBar, setSnackBar] = useState({
+    open: false,
+    message: "",
+    severity: "",
+  });
   const { handleSubmit, control, reset } = useForm();
 
+  const snackBarCloseHandler = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setSnackBar({ open: false });
+  };
   const resetForm = () => {
     reset();
     setAdmin(false);
     setIsloading(false);
   };
 
-  const addUserHandler = (data, e) => {
-    e.preventDefault();
+  const addUserHandler = (data, event) => {
+    event.preventDefault();
     setIsloading(true);
 
     console.log({ ...data, isAdmin: admin });
@@ -47,13 +65,16 @@ export default function AddUser() {
     createUser({ ...data, isAdmin: admin })
       .then((result) => {
         console.log(result.data);
-        alert(result.data);
+        // alert(result.data);
+        setSnackBar({ open: true, message: result.data, severity: "success" });
         resetForm();
       })
       .catch((error) => {
         setIsloading(false);
+        setSnackBar({ open: true, message: error.message, severity: "error" });
 
-        alert(error.message);
+
+        // alert(error.message);
       });
   };
 
@@ -138,6 +159,19 @@ export default function AddUser() {
           </LoadingButton>
         </Box>
       </Box>
+      <Snackbar
+        open={snackBar.open}
+        autoHideDuration={6000}
+        onClose={snackBarCloseHandler}
+      >
+        <Alert
+          onClose={snackBarCloseHandler}
+          severity={snackBar.severity}
+          sx={{ width: "100%" }}
+        >
+          {snackBar.message}
+        </Alert>
+      </Snackbar>
     </Container>
   );
 }

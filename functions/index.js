@@ -31,6 +31,9 @@ exports.createUser = functions.https.onCall((data, context) => {
     );
   }
 
+  // ERRORS ARE NOT BEING SENT BACK TO THE CLIENT
+  // ERRORS ARE NOT BEING SENT BACK TO THE CLIENT
+  // ERRORS ARE NOT BEING SENT BACK TO THE CLIENT
   return (
     admin
       .auth()
@@ -62,6 +65,8 @@ exports.createUser = functions.https.onCall((data, context) => {
         admin.auth().setCustomUserClaims(user.uid, { isAdmin: data.isAdmin, accessLevel: data.access_level });
       })
       .catch((error) => {
+  // THIS CATCH IS NOT RETURNING THE ERROR
+
         throw new functions.https.HttpsError(
           "failed-precondition",
           error.message
@@ -93,7 +98,7 @@ exports.createUser = functions.https.onCall((data, context) => {
         dateOfBirth: new Date(`${data.date_of_birth} GMT-0500`),
         createdOn: new Date() ,
         role: data.isAdmin ? "ADMIN" : "USER",
-        accessLevel: data.access_level
+        accessLevel: data.isAdmin ? data.access_level : "N/A"
       })
       .catch((error) => {
         throw new functions.https.HttpsError(

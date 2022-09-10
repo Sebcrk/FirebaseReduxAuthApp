@@ -1,6 +1,7 @@
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
+import { useSelector } from "react-redux";
 
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
@@ -10,8 +11,8 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { MainListItems, AdminListItems } from "../ListItems";
 
 
-export default function TemporaryDrawer({ toggleDrawer, isOpen }) {
-
+export default function TemporaryDrawer({ toggleDrawer, isOpen, admin }) {
+  const user = useSelector((state) => state.auth.user);
 
   return (
     <div>
@@ -38,7 +39,7 @@ export default function TemporaryDrawer({ toggleDrawer, isOpen }) {
             <List component="nav">
               <MainListItems onToggleDrawer={toggleDrawer}/>
               <Divider sx={{ my: 1 }} />
-              <AdminListItems onToggleDrawer={toggleDrawer}/>
+              {user.isAdmin && <AdminListItems onToggleDrawer={toggleDrawer}/>}
             </List>
           </Box>
         </Drawer>

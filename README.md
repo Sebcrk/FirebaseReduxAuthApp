@@ -1,3 +1,4 @@
+
 # ReduxAuthApp
 
 ReduxAuthApp is a React Access Control project that uses Firebase to handle role-based authentication and database, with MUI at its core.
