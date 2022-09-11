@@ -23,97 +23,142 @@ admin.initializeApp();
 //   return `Hello, ${data.collection}`
 // });
 
+//----------------------Create user authentication--------------------------------------------------------------------
 exports.createUser = functions.https.onCall((data, context) => {
-  if (context.auth.token.isAdmin !== true && context.auth.token.accessLevel > 2) {
+  if (
+    context.auth.token.isAdmin !== true &&
+    context.auth.token.accessLevel > 2
+  ) {
     throw new functions.https.HttpsError(
       "failed-precondition",
       "Denied! Only high-level Admins can create new users"
     );
   }
 
-  return (
-    admin
-      .auth()
-      .createUser({
-        email: data.email,
-        password: data.password,
-        uid: data.id,
-        displayName:
-          data.first_name
-            .toUpperCase()
-            .normalize("NFD")
-            .replace(
-              /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
-              "$1"
-            )
-            .normalize() +
-          " " +
-          data.last_name
-            .toUpperCase()
-            .normalize("NFD")
-            .replace(
-              /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
-              "$1"
-            )
-            .normalize(),
-        emailVerified: true,
-      })
-      .then((user) => {
-        admin.auth().setCustomUserClaims(user.uid, { isAdmin: data.isAdmin, accessLevel: data.access_level });
-      })
-      .catch((error) => { 
-        throw new functions.https.HttpsError(
-          "failed-precondition",
-          error.message
-        );
-      })    
-  );
+  return admin
+    .auth()
+    .createUser({
+      email: data.email,
+      password: data.password,
+      uid: data.id,
+      displayName:
+        data.first_name
+          .toUpperCase()
+          .normalize("NFD")
+          .replace(
+            /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
+            "$1"
+          )
+          .normalize() +
+        " " +
+        data.last_name
+          .toUpperCase()
+          .normalize("NFD")
+          .replace(
+            /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
+            "$1"
+          )
+          .normalize(),
+      emailVerified: true,
+    })
+    .then((user) => {
+      admin.auth().setCustomUserClaims(user.uid, {
+        isAdmin: data.isAdmin,
+        accessLevel: data.access_level,
+      });
+    })
+    .catch((error) => {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        error.message
+      );
+    });
 });
 
-
-
+//------------------------Add user to database--------------------------------------------------------------------
+//--------------------Used after user auth was created--------------------------------------------------------------------
 exports.addUserToDB = functions.https.onCall((data, context) => {
-  if (context.auth.token.isAdmin !== true && context.auth.token.accessLevel > 2) {
+  if (
+    context.auth.token.isAdmin !== true &&
+    context.auth.token.accessLevel > 2
+  ) {
     throw new functions.https.HttpsError(
       "failed-precondition",
       "Denied! Only high-level Admins can add new users to the database"
     );
   }
 
-  return (
-    admin
-      .firestore()
-      .collection("users")
-      .doc(data.id)
-      .create({
-        firstName: data.first_name
-          .toUpperCase()
-          .normalize("NFD")
-          .replace(
-            /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
-            "$1"
-          )
-          .normalize(),
-        lastName: data.last_name
-          .toUpperCase()
-          .normalize("NFD")
-          .replace(
-            /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
-            "$1"
-          )
-          .normalize(),
-        id: data.id,
-        email: data.email,
-        dateOfBirth: new Date(`${data.date_of_birth} GMT-0500`),
-        createdOn: new Date() ,
-        role: data.isAdmin ? "ADMIN" : "USER",
-        accessLevel: data.isAdmin ? data.access_level : "N/A"
-      })
-      .catch((error) => {
-        throw new functions.https.HttpsError(
-          "failed-precondition",
-          error.message
-        );
-      })
-  )
-})
+  return admin
+    .firestore()
+    .collection("users")
+    .doc(data.id)
+    .create({
+      firstName: data.first_name
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(
+          /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
+          "$1"
+        )
+        .normalize(),
+      lastName: data.last_name
+        .toUpperCase()
+        .normalize("NFD")
+        .replace(
+          /([^n\u0300-\u036f]|n(?!\u0303(?![\u0300-\u036f])))[\u0300-\u036f]+/gi,
+          "$1"
+        )
+        .normalize(),
+      id: data.id,
+      email: data.email,
+      dateOfBirth: new Date(`${data.date_of_birth} GMT-0500`),
+      createdOn: new Date(),
+      role: data.isAdmin ? "ADMIN" : "USER",
+      accessLevel: data.isAdmin ? data.access_level : "N/A",
+    })
+    .catch((error) => {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        error.message
+      );
+    });
+});
+
+//------------------------Delete user authentication--------------------------------------------------------------------
+exports.deleteUser = functions.https.onCall((data, context) => {
+  if (
+    context.auth.token.isAdmin !== true &&
+    context.auth.token.accessLevel > 2
+  ) {
+    throw new functions.https.HttpsError(
+      "failed-precondition",
+      "Denied! Only high-level Admins can delete users"
+    );
+  }
+
+  return admin
+    .auth()
+    .deleteUser(data.idToDelete)
+    .catch((error) => {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        error.message
+      );
+    });
+});
+
+exports.deleteUserFromDB = functions.auth.user().onDelete((user) => {
+  // Works inside or outside of return
+  // After testing, not able to send a result once the taks is performed
+  admin
+    .firestore()
+    .collection("users")
+    .doc(user.uid)
+    .delete()
+    .catch((error) => {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        error.message
+      );
+    });
+  });

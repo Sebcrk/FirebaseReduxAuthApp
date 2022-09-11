@@ -6,9 +6,11 @@ export default function ProtectedRoute(props) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   const accessToken = useSelector((state) => state.auth.token);
-  const user = useSelector((state) => state.auth.user);
+  const user = useSelector((state) => state.auth.user );
+  const isNotAllowed = user.accessLevel === undefined ? true : user.accessLevel < routeAccessLevel
 
-  if (adminRoute && user.accessLevel < routeAccessLevel) {
+
+  if (adminRoute && isNotAllowed) {
     // User does not have access privileges
     console.log(
       "Admin-only route above user's Access Level. Not allowed. Routing to /"

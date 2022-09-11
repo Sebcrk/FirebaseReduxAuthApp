@@ -10,7 +10,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
@@ -113,7 +113,7 @@ export default function AddUser() {
         }}
       >
         <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <LockOutlinedIcon />
+          <PersonAddIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
           Create New User

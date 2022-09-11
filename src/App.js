@@ -24,7 +24,6 @@ function App() {
     open: false,
   });
   const dispatch = useDispatch();
-  console.log(user);
 
   useEffect(() => {
     onAuthStateChanged(auth, (userData) => {
@@ -32,6 +31,7 @@ function App() {
         userData.getIdTokenResult().then((idTokenResult) => {
           const { name, email, isAdmin, user_id, accessLevel } =
             idTokenResult.claims;
+            
           setSnackBar({ open: true });
 
           // Check if user is admin
@@ -50,7 +50,7 @@ function App() {
                 },
               })
             );
-            console.log("User has Admin privileges");
+            // console.log("User has Admin privileges");
           } else {
             dispatch(
               authActions.authenticate({
@@ -63,7 +63,7 @@ function App() {
                 },
               })
             );
-            console.log("User does NOT has Admin privileges");
+            // console.log("User does NOT has Admin privileges");
           }
         });
       } else {

@@ -35,7 +35,6 @@ export default function SignIn() {
       data.email,
       data.password
     );
-    console.log(loginData);
     navigate("/", { replace: true });
     console.log("Signed in: " + loginData);
     setIsloading(false);

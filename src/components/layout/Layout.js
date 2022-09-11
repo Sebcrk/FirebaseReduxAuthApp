@@ -1,7 +1,6 @@
 import React from "react";
 import classes from "./Layout.module.css";
-import DrawerComponent from "./Drawer";
-import TemporaryDrawer from "./TempDrawer";
+import Drawer from "./Drawer";
 import MainNavigation from "./MainNavigation";
 import { useSelector } from "react-redux";
 
@@ -82,8 +81,8 @@ const Layout = (props) => {
           </Toolbar>
         </AppBar>
         {isAuth && (
-          <TemporaryDrawer admin={props.admin} isOpen={openDrawer} toggleDrawer={toggleDrawer} />
-          // <DrawerComponent onOpen={open} onToggleDrawer={toggleDrawer2} />
+          <Drawer admin={props.admin} isOpen={openDrawer} toggleDrawer={toggleDrawer} />
+          
         )}
 
         <Box
