@@ -60,7 +60,7 @@ const guestReportNavigationItems = [
 
 const adminNavigationItems = [
   {
-    text: "User Search",
+    text: "Search User",
     url: "/admin/search",
     icon: <SearchIcon />,
     accessLevel: 1

@@ -11,7 +11,7 @@ ReduxAuthApp is a React Access Control project that uses Firebase to handle role
 * React
 * Redux
 * Firebase
-
+* MUI
 
 ## Setup
 
@@ -19,6 +19,7 @@ Requirements to run this project:
 
 * Node Package Manager (npm)
 * React
+* Firebase Account
 
 ## Installation
 
@@ -30,7 +31,8 @@ npm install
 
 ## Usage
 
-To run the app.
+To run the app make sure that the Firebase configuration is present in the .env file.
+
 ```shell
 npm start
 ```

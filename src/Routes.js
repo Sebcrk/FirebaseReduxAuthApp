@@ -21,7 +21,7 @@ const Map = lazy(() => import("./routes/Guests/Map"));
 const AddUser = lazy(() => import("./routes/Admin/AddUser"));
 const DeleteUser = lazy(() => import("./routes/Admin/DeleteUser"));
 const EditUser = lazy(() => import("./routes/Admin/EditUser"));
-const AdminSearch = lazy(() => import("./routes/Admin/AdminSearch"));
+const SearchUser = lazy(() => import("./routes/Admin/SearchUser"));
 const BanGuests = lazy(() => import("./routes/Admin/BanGuests"));
 const NotFound = lazy(() => import("./routes/NotFound"));
 
@@ -35,7 +35,7 @@ const routesArray = [
   { url: "guests/reports", comp: Reports, protected: true },
   {
     url: "admin/search",
-    comp: AdminSearch,
+    comp: SearchUser,
     protected: true,
     admin: true,
     accessLevel: 1,
