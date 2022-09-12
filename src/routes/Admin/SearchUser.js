@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { db } from "../../firebase";
-import { collection, doc, getDocs, where, query } from "firebase/firestore";
+import { collection, getDocs, where, query } from "firebase/firestore";
+
 import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,6 +13,7 @@ import Container from "@mui/material/Container";
 import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import TableComp from "../../components/UI/TableComp";
 
 import InputText from "../../components/UI/InputText";
 
@@ -21,7 +23,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 
 function SearchUser() {
   const [isLoading, setIsloading] = useState(false);
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState();
   const [snackBar, setSnackBar] = useState({
     open: false,
     message: "",
@@ -48,20 +50,20 @@ function SearchUser() {
 
     const usersRef = collection(db, "users");
 
-    const isFirstNameQuery = getDocs(
-      query(usersRef, where("firstName", "==", parameter.toUpperCase()))
-    );
-    const isLastNameQuery = getDocs(
-      query(usersRef, where("lastName", "==", parameter.toUpperCase()))
-    );
-    const isIDQuery = getDocs(query(usersRef, where("id", "==", parameter)));
+    const queryArray = ["firstName", "lastName", "id"];
 
-    const [isFirstNameSnapShot, isLastNameSnapshot, isIDSnapshot] =
-      await Promise.all([isFirstNameQuery, isLastNameQuery, isIDQuery]);
+    const queries = queryArray.map((queryParam) => {
+      return getDocs(
+        query(usersRef, where(queryParam, "==", parameter.toUpperCase()))
+      );
+    });
 
-    const isFirstNameArray = isFirstNameSnapShot.docs;
-    const isLastNameArray = isLastNameSnapshot.docs;
-    const isIDArray = isIDSnapshot.docs;
+    const queryResult = await Promise.all(queries);
+    const queryResultArray = queryResult.map((query) => {
+      return query.docs;
+    });
+
+    const [isFirstNameArray, isLastNameArray, isIDArray] = queryResultArray;
 
     const queryResultsArray = isFirstNameArray.concat(
       isLastNameArray,
@@ -70,15 +72,18 @@ function SearchUser() {
 
     const resultsArray = [];
     if (queryResultsArray.length === 0) {
+      setIsloading(false);
+      setResults();
       setSnackBar({ open: true, message: "No user found", severity: "error" });
     } else {
       queryResultsArray.forEach((doc) => {
-        resultsArray.unshift(doc.data());
+        resultsArray.push(doc.data());
         resetForm();
       });
-      console.log(resultsArray);
+      setResults(resultsArray);
     }
   };
+
   return (
     <Container component="main">
       <CssBaseline />
@@ -133,9 +138,10 @@ function SearchUser() {
           </LoadingButton>
         </Box>
       </Box>
+      {results && <TableComp type="SearchUser" dataInfo={results} />}
       <Snackbar
         open={snackBar.open}
-        autoHideDuration={3000}
+        autoHideDuration={2000}
         onClose={snackBarCloseHandler}
       >
         <Alert
