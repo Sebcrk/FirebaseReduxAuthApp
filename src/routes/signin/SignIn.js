@@ -35,8 +35,8 @@ export default function SignIn() {
       data.email,
       data.password
     );
+    console.log("Signed in: " + loginData.user.displayName);
     navigate("/", { replace: true });
-    console.log("Signed in: " + loginData);
     setIsloading(false);
    } 
    catch (error ) {

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { functions, db } from "../../firebase";
-import { httpsCallable } from "firebase/functions";
 import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -12,15 +10,18 @@ import Container from "@mui/material/Container";
 import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
+import TableComp from "../../components/UI/TableComp";
 
+import searchDB from "../../utils.js/searchDB";
 import InputText from "../../components/UI/InputText";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-function DeleteUser() {
+function SearchGuest() {
   const [isLoading, setIsloading] = useState(false);
+  const [results, setResults] = useState();
   const [snackBar, setSnackBar] = useState({
     open: false,
     message: "",
@@ -40,29 +41,33 @@ function DeleteUser() {
     setSnackBar({ open: false });
   };
 
-  const deleteUserHandler = (data, event) => {
-    event.preventDefault();
-    setIsloading(true);
+  const searchGuestHandler = async (data, event) => {
+    try {
+      event.preventDefault();
+      setIsloading(true);
 
-    // Cloud Function
-    const deleteUser = httpsCallable(functions, "deleteUser");
-    deleteUser({ idToDelete: data.id })
-      .then(() => {
+      const queryResultsArray = await searchDB(data.parameter, "guests");
+
+      const resultsArray = [];
+      if (queryResultsArray === undefined || queryResultsArray.length === 0) {
+        setIsloading(false);
+        setResults();
         setSnackBar({
           open: true,
-          message: `User ${data.id} has been deleted`,
-          severity: "success",
+          message: "No guest entry found",
+          severity: "error",
         });
-        resetForm();
-      })
-      .catch((error) => {
-        setIsloading(false);
-        console.log(error.message);
-        setSnackBar({ open: true, message: error.message, severity: "error" });
-      });
+      } else {
+        queryResultsArray.forEach((doc) => {
+          resultsArray.push(doc.data());
+          resetForm();
+        });
+        setResults(resultsArray);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
   };
-
-
 
   return (
     <Container component="main">
@@ -75,29 +80,30 @@ function DeleteUser() {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: (theme) => theme.palette.warning.main }}>
+        <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
           <PersonAddDisabledIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
-          Delete User
+        <Typography component="h2" variant="h5">
+          Search Guest
+        </Typography>
+        <Typography variant="body2" color="textSecondary" align="center">
+          Search guest by ID, name or last name
         </Typography>
         <Box
           component="form"
-          onSubmit={handleSubmit(deleteUserHandler)}
+          onSubmit={handleSubmit(searchGuestHandler)}
           sx={{ mt: 3 }}
         >
           <Grid container spacing={1} rowSpacing={0.1}>
             <Grid item xs={12} sm={12}>
               <InputText
                 control={control}
-                name="ID"
-                type="number"
+                name="Parameter"
                 fullWidth
                 required
               />
             </Grid>
           </Grid>
-
           <LoadingButton
             type="submit"
             loading={isLoading}
@@ -106,17 +112,17 @@ function DeleteUser() {
             sx={{
               mt: 3,
               mb: 2,
-              bgcolor: (theme) => theme.palette.warning.light,
-              "&:hover": { bgcolor: (theme) => theme.palette.warning.main },
+              bgcolor: "primary.light",
             }}
           >
-            Delete user
+            Search
           </LoadingButton>
         </Box>
       </Box>
+      {results && <TableComp type="SearchGuest" dataInfo={results} />}
       <Snackbar
         open={snackBar.open}
-        autoHideDuration={3000}
+        autoHideDuration={2000}
         onClose={snackBarCloseHandler}
       >
         <Alert
@@ -131,4 +137,4 @@ function DeleteUser() {
   );
 }
 
-export default DeleteUser;
+export default SearchGuest;

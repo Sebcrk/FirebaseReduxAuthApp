@@ -17,7 +17,7 @@ const searchUserTitles = [
   "Date of birth",
   "Created on",
 ];
-const SearchUserTitle = () => {
+const SearchUserTitleComp = () => {
   return searchUserTitles.map((title) => (
     <TableCell sx={{ fontWeight: "bold" }} align="center" key={title}>
       {title}
@@ -47,7 +47,7 @@ const SearchUserData = ({ dataInfo }) => {
   ));
 };
 
-const guestSearchTitles = [
+const searchGuestTitles = [
   "Name",
   "ID",
   "Role",
@@ -56,15 +56,15 @@ const guestSearchTitles = [
   "Destination",
 ];
 
-const GuestSearchTitle = () => {
-  return guestSearchTitles.map((title) => (
+const SearchGuestTitleComp = () => {
+  return searchGuestTitles.map((title) => (
     <TableCell sx={{ fontWeight: "bold" }} align="center" key={title}>
       {title}
     </TableCell>
   ));
 };
 
-const GuestSearchData = ({ dataInfo }) => {
+const SearchGuestData = ({ dataInfo }) => {
   return dataInfo.map((data) => (
     <TableRow key={data.id}>
       <TableCell align="center">
@@ -92,13 +92,13 @@ export default function TableComp(props) {
       <Table sx={{ minWidth: 650 }} aria-label="Search user table">
         <TableHead>
           <TableRow>
-            {type === "SearchUser" && <SearchUserTitle />}
-            {type === "GuestSearch" && <GuestSearchTitle />}
+            {type === "SearchUser" && <SearchUserTitleComp />}
+            {type === "SearchGuest" && <SearchGuestTitleComp />}
           </TableRow>
         </TableHead>
         <TableBody>
           {type === "SearchUser" && <SearchUserData dataInfo={dataInfo} />}
-          {type === "GuestSearch" && <GuestSearchData dataInfo={dataInfo} />}
+          {type === "SearchGuest" && <SearchGuestData dataInfo={dataInfo} />}
         </TableBody>
       </Table>
     </TableContainer>

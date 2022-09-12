@@ -16,7 +16,7 @@ const Validation = lazy(() => import("./routes/Validation"));
 const Dashboard = lazy(() => import("./routes/Dashboard"));
 const Schedule = lazy(() => import("./routes/Guests/Schedule"));
 const Reports = lazy(() => import("./routes/Guests/Reports"));
-const GuestSearch = lazy(() => import("./routes/Guests/GuestSearch"));
+const SearchGuest = lazy(() => import("./routes/Guests/SearchGuest"));
 const Map = lazy(() => import("./routes/Guests/Map"));
 const AddUser = lazy(() => import("./routes/Admin/AddUser"));
 const DeleteUser = lazy(() => import("./routes/Admin/DeleteUser"));
@@ -29,7 +29,7 @@ const routesArray = [
   { url: "/", comp: Dashboard, protected: true },
   { url: "profile", comp: UserProfile, protected: true },
   { url: "validation", comp: Validation, protected: true },
-  { url: "guests/search", comp: GuestSearch, protected: true },
+  { url: "guests/search", comp: SearchGuest, protected: true },
   { url: "guests/schedule", comp: Schedule, protected: true },
   { url: "guests/map", comp: Map, protected: true },
   { url: "guests/reports", comp: Reports, protected: true },
@@ -41,18 +41,18 @@ const routesArray = [
     accessLevel: 1,
   },
   {
-    url: "admin/add",
-    comp: AddUser,
-    protected: true,
-    admin: true,
-    accessLevel: 2,
-  },
-  {
     url: "admin/edit",
     comp: EditUser,
     protected: true,
     admin: true,
     accessLevel: 1,
+  },
+  {
+    url: "admin/add",
+    comp: AddUser,
+    protected: true,
+    admin: true,
+    accessLevel: 2,
   },
   {
     url: "admin/delete",

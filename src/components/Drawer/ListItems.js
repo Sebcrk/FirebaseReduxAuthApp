@@ -37,7 +37,7 @@ const userNavigationItems = [
 
 const guestReportNavigationItems = [
   {
-    text: "Guest Search",
+    text: "Search Guest",
     url: "/guests/search",
     icon: <SearchIcon />,
   },

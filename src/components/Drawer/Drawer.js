@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import { MainListItems, AdminListItems } from "../ListItems";
+import { MainListItems, AdminListItems } from "./ListItems";
 
 
 export default function TemporaryDrawer({ toggleDrawer, isOpen, admin }) {

@@ -10,7 +10,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
@@ -60,7 +60,6 @@ export default function AddUser() {
     event.preventDefault();
     setIsloading(true);
 
-    console.log({ ...data, isAdmin: admin });
     // Cloud Function
     const createUser = httpsCallable(functions, "createUser");
     createUser({ ...data, isAdmin: admin })
@@ -101,6 +100,8 @@ export default function AddUser() {
     setAdmin(event.target.checked);
   };
 
+
+
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -118,10 +119,7 @@ export default function AddUser() {
         <Typography component="h1" variant="h5">
           Create New User
         </Typography>
-
-        {/* CHANGE THE NOVALIDATE PROPERTY */}
         <Box
-          noValidate
           component="form"
           onSubmit={handleSubmit(addUserHandler)}
           sx={{ mt: 3 }}
@@ -181,7 +179,7 @@ export default function AddUser() {
       </Box>
       <Snackbar
         open={snackBar.open}
-        autoHideDuration={3000}
+        autoHideDuration={5000}
         onClose={snackBarCloseHandler}
       >
         <Alert

@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./Layout.module.css";
-import Drawer from "./Drawer";
+import Drawer from "../Drawer/Drawer";
 import MainNavigation from "./MainNavigation";
 import { useSelector } from "react-redux";
 
@@ -17,7 +17,6 @@ import IconButton from "@mui/material/IconButton";
 
 const Layout = (props) => {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const user = useSelector((state) => state.auth.user);
   const accessToken = useSelector((state) => state.auth.token);
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const [openDrawer, setOpenDrawer] = React.useState(false);
@@ -81,7 +80,7 @@ const Layout = (props) => {
           </Toolbar>
         </AppBar>
         {isAuth && (
-          <Drawer admin={props.admin} isOpen={openDrawer} toggleDrawer={toggleDrawer} />
+          <Drawer isOpen={openDrawer} toggleDrawer={toggleDrawer} />
           
         )}
 

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { db } from "../../firebase";
-import { collection, getDocs, where, query } from "firebase/firestore";
 
 import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -15,6 +13,7 @@ import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import TableComp from "../../components/UI/TableComp";
 
+import searchDB from "../../utils.js/searchDB";
 import InputText from "../../components/UI/InputText";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -44,43 +43,30 @@ function SearchUser() {
   };
 
   const searchUserHandler = async (data, event) => {
-    event.preventDefault();
-    setIsloading(true);
-    const parameter = data.parameter;
+    try {
+      event.preventDefault();
+      setIsloading(true);
 
-    const usersRef = collection(db, "users");
+      const queryResultsArray = await searchDB(data.parameter, "users");
 
-    const queryArray = ["firstName", "lastName", "id"];
-
-    const queries = queryArray.map((queryParam) => {
-      return getDocs(
-        query(usersRef, where(queryParam, "==", parameter.toUpperCase()))
-      );
-    });
-
-    const queryResult = await Promise.all(queries);
-    const queryResultArray = queryResult.map((query) => {
-      return query.docs;
-    });
-
-    const [isFirstNameArray, isLastNameArray, isIDArray] = queryResultArray;
-
-    const queryResultsArray = isFirstNameArray.concat(
-      isLastNameArray,
-      isIDArray
-    );
-
-    const resultsArray = [];
-    if (queryResultsArray.length === 0) {
-      setIsloading(false);
-      setResults();
-      setSnackBar({ open: true, message: "No user found", severity: "error" });
-    } else {
-      queryResultsArray.forEach((doc) => {
-        resultsArray.push(doc.data());
-        resetForm();
-      });
-      setResults(resultsArray);
+      const resultsArray = [];
+      if (queryResultsArray === undefined || queryResultsArray.length === 0) {
+        setIsloading(false);
+        setResults();
+        setSnackBar({
+          open: true,
+          message: "No user found",
+          severity: "error",
+        });
+      } else {
+        queryResultsArray.forEach((doc) => {
+          resultsArray.push(doc.data());
+          resetForm();
+        });
+        setResults(resultsArray);
+      }
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -99,15 +85,12 @@ function SearchUser() {
           <PersonAddDisabledIcon />
         </Avatar>
         <Typography component="h2" variant="h5">
-          Search user
+          Search User
         </Typography>
         <Typography variant="body2" color="textSecondary" align="center">
           Search user by ID, name or last name
         </Typography>
-
-        {/* CHANGE THE NOVALIDATE PROPERTY */}
         <Box
-          noValidate
           component="form"
           onSubmit={handleSubmit(searchUserHandler)}
           sx={{ mt: 3 }}
@@ -122,7 +105,6 @@ function SearchUser() {
               />
             </Grid>
           </Grid>
-
           <LoadingButton
             type="submit"
             loading={isLoading}
