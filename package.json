@@ -1,5 +1,5 @@
 {
-  "name": "redux-auth-app",
+  "name": "firebase-redux-auth-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

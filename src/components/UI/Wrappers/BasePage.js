@@ -12,13 +12,13 @@ const BasePage = (props) => {
       <CssBaseline />
       <Box
         sx={{
-          marginTop: 8,
+          marginTop: 4,
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Icon sx={{ color: color, width: 100, height: 100 }} />
+        <Icon sx={{ color: `${color}.light`, width: 100, height: 100 }} />
         <Typography component="h2" variant="h5">
           {title}
         </Typography>

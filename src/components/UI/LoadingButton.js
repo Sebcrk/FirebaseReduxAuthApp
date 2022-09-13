@@ -2,7 +2,6 @@
 import LoadingButton from "@mui/lab/LoadingButton";
 
 function LoadingButtonComp(props) {
-    console.log(props);
   return (
     <LoadingButton
     type="submit"
@@ -12,8 +11,8 @@ function LoadingButtonComp(props) {
     sx={{
       mt: 3,
       mb: 2,
-      bgcolor: props.color,
-      "&:hover" : {bgcolor: "warning.dark"},
+      bgcolor: `${props.color}.light`,
+      "&:hover" : {bgcolor: `${props.color}.dark`},
     }}
   >
     {props.children}

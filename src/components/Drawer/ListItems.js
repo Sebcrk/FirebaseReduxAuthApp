@@ -19,19 +19,25 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import PersonRemoveIcon from "@mui/icons-material/PersonRemove";
 import BlockIcon from "@mui/icons-material/Block";
 import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
-import TuneIcon from '@mui/icons-material/Tune';
+import TuneIcon from "@mui/icons-material/Tune";
 
+const styles = {
+  mainItem: { fontSize: 30 },
+  collapsedItems: {
+    paddingLeft: (theme) => theme.spacing(2),
+  },
+};
 
-const userNavigationItems = [
+const generalNavigationItems = [
   {
     text: "Dashboard",
     url: "/",
-    icon: <DashboardIcon />,
+    icon: <DashboardIcon sx={styles.mainItem} />,
   },
   {
     text: "Validation",
     url: "/validation",
-    icon: <FingerprintIcon />,
+    icon: <FingerprintIcon sx={styles.mainItem} />,
   },
 ];
 
@@ -63,31 +69,31 @@ const adminNavigationItems = [
     text: "Search User",
     url: "/admin/search",
     icon: <SearchIcon />,
-    accessLevel: 1
+    accessLevel: 1,
   },
   {
     text: "Add User",
     url: "/admin/add",
     icon: <PersonAddIcon />,
-    accessLevel: 2
+    accessLevel: 2,
   },
   {
     text: "Edit User",
     url: "/admin/edit",
     icon: <TuneIcon />,
-    accessLevel: 1
+    accessLevel: 1,
   },
   {
     text: "Delete User",
     url: "/admin/delete",
     icon: <PersonRemoveIcon />,
-    accessLevel: 2
+    accessLevel: 2,
   },
   {
     text: "Ban Guests",
     url: "/admin/ban",
     icon: <BlockIcon />,
-    accessLevel: 3
+    accessLevel: 3,
   },
 ];
 
@@ -100,7 +106,7 @@ export const MainListItems = (props) => {
 
   return (
     <>
-      {userNavigationItems.map((item) => (
+      {generalNavigationItems.map((item) => (
         <ListItemButton
           key={item.text}
           onClick={props.onToggleDrawer(false)}
@@ -113,12 +119,17 @@ export const MainListItems = (props) => {
       ))}
       <ListItemButton onClick={reportsCollapseHandler}>
         <ListItemIcon>
-          <AssignmentIcon />
+          <AssignmentIcon sx={styles.mainItem} />
         </ListItemIcon>
         <ListItemText primary="Guests" />
         {!openReportCollapse ? <ExpandMoreIcon /> : <ExpandLessIcon />}
       </ListItemButton>
-      <Collapse in={openReportCollapse} timeout="auto" unmountOnExit>
+      <Collapse
+        sx={styles.collapsedItems}
+        in={openReportCollapse}
+        timeout="auto"
+        unmountOnExit
+      >
         {guestReportNavigationItems.map((item) => {
           return (
             <ListItemButton
@@ -138,7 +149,7 @@ export const MainListItems = (props) => {
 };
 
 export const AdminListItems = (props) => {
-  const user = useSelector(state => state.auth.user)
+  const user = useSelector((state) => state.auth.user);
   const [openAdminCollapse, setOpenAdminCollapse] = useState(false);
 
   const adminCollapseHandler = () => {
@@ -148,18 +159,23 @@ export const AdminListItems = (props) => {
     <>
       <ListItemButton onClick={adminCollapseHandler}>
         <ListItemIcon>
-          <AssignmentIndIcon />
+          <AssignmentIndIcon fontSize="large" />
         </ListItemIcon>
         <ListItemText primary="Admin Tools" />
         {!openAdminCollapse ? <ExpandMoreIcon /> : <ExpandLessIcon />}
       </ListItemButton>
-      <Collapse in={openAdminCollapse} timeout="auto" unmountOnExit>
+      <Collapse sx={styles.collapsedItems} in={openAdminCollapse} timeout="auto" unmountOnExit>
         {adminNavigationItems.map((item) => {
           if (user.accessLevel < item.accessLevel) {
-            return 
+            return;
           }
           return (
-            <ListItemButton key={item.text} onClick={props.onToggleDrawer(false)} component={Link} to={item.url}>
+            <ListItemButton
+              key={item.text}
+              onClick={props.onToggleDrawer(false)}
+              component={Link}
+              to={item.url}
+            >
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />
             </ListItemButton>

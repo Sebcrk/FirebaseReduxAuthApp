@@ -1,18 +1,14 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { db, functions } from "../../firebase";
+import { functions } from "../../firebase";
 import { httpsCallable } from "firebase/functions";
 
-import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
-import CssBaseline from "@mui/material/CssBaseline";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
 
 import AlertComponent from "../../components/UI/AlertComponent";
@@ -30,9 +26,9 @@ const dataArray = [
 ];
 
 const baseData = {
-  color: "primary.main",
+  color: "info",
   Icon: PersonAddIcon,
-  title: "Create New User",
+  title: "Add New User",
 };
 
 export default function AddUser() {
@@ -122,8 +118,7 @@ export default function AddUser() {
           spacing={1}
           rowSpacing={0.1}
         >
-          {dataArray.map((data) => {
-            return (
+          {dataArray.map((data) => (
               <Grid key={data.name} item xs={12} sm={data.sm}>
                 <InputText
                   control={control}
@@ -132,9 +127,8 @@ export default function AddUser() {
                   fullWidth
                   required
                 />
-              </Grid>
-            );
-          })}
+              </Grid>           
+          ))}
           <Grid item xs={6} sm={6}>
             <FormControlLabel
               label="Make Admin"
@@ -169,7 +163,7 @@ export default function AddUser() {
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
         >
-          Create new user
+          Add new user
         </LoadingButton>
       </Box>
       <Snackbar

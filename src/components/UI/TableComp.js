@@ -6,7 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { formatDistanceToNowStrict } from "date-fns";
+// import { formatDistanceToNowStrict } from "date-fns";
 
 
 // Separate the components and organize it in a folder
@@ -49,6 +49,11 @@ const SearchUserData = ({ dataInfo }) => {
   ));
 };
 
+
+
+
+
+
 const searchGuestTitles = [
   "Name",
   "ID",
@@ -68,7 +73,7 @@ const SearchGuestTitleComp = () => {
 
 const SearchGuestData = ({ dataInfo }) => {
   return dataInfo.map((data) => (
-    <TableRow key={data.id}>
+    <TableRow key={data.id} >
       <TableCell align="center">
         {data.firstName + " " + data.lastName}
       </TableCell>
@@ -76,7 +81,8 @@ const SearchGuestData = ({ dataInfo }) => {
       <TableCell align="center">{data.role}</TableCell>
       <TableCell align="center">{data.entrance}</TableCell>
       <TableCell align="center">
-      {formatDistanceToNowStrict(data.dateOfEntry.toDate(), { addSuffix: true })}
+      {data.dateOfEntry.toDate().toLocaleString("en-US", {dateStyle: "long",timeStyle: 'short'})}
+      {/* {formatDistanceToNowStrict(data.dateOfEntry.toDate(), { addSuffix: true })} */}
       </TableCell>
       <TableCell align="center">{data.destination}</TableCell>
     </TableRow>
@@ -90,8 +96,8 @@ export default function TableComp(props) {
   const { type, dataInfo } = props;
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="Search user table">
+    <TableContainer sx={{mt: 2}}>
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="Search table">
         <TableHead>
           <TableRow>
             {type === "SearchUser" && <SearchUserTitleComp />}

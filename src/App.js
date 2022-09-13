@@ -6,7 +6,8 @@ import { authActions } from "./store/auth-slice";
 import Layout from "./components/layout/Layout";
 import RoutesComp from "./Routes";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+
+import AlertComponent from "./components/UI/AlertComponent";
 //SnackBar works properly with success and error events.
 // SnackBack is shown when password is reset and
 // when user is logged in
@@ -14,9 +15,6 @@ import MuiAlert from "@mui/material/Alert";
 //Cloud Function returns error correctly when only the Auth
 // part is loaded.
 
-const Alert = forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 function App() {
   const user = useSelector((state) => state.auth.user);
@@ -88,13 +86,13 @@ function App() {
         autoHideDuration={3000}
         onClose={snackBarCloseHandler}
       >
-        <Alert
+        <AlertComponent
           onClose={snackBarCloseHandler}
           severity="success"
           sx={{ width: "100%" }}
         >
           {"Logged in as: " + user.displayName}
-        </Alert>
+        </AlertComponent>
       </Snackbar>
     </Layout>
   );

@@ -6,22 +6,18 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import FaceIcon from '@mui/icons-material/Face';
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import TableComp from "../../components/UI/TableComp";
 
+import AlertComponent from "../../components/UI/AlertComponent";
+import TableComp from "../../components/UI/TableComp";
 import LoadingButtonComp from "../../components/UI/LoadingButton";
-import searchDB from "../../utils.js/searchDB";
+import {compoundSearchDB} from "../../utils.js/searchDB";
 import InputText from "../../components/UI/InputText";
 import BasePage from "../../components/UI/Wrappers/BasePage";
 
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
-
 
 const baseData = {
-  color: "primary.dark",
+  color: "primary",
   Icon: FaceIcon,
   title: "Search User",
   subtitle: "Search user by ID, name or last name",
@@ -55,7 +51,7 @@ function SearchUser() {
       event.preventDefault();
       setIsloading(true);
 
-      const queryResultsArray = await searchDB(data.parameter, "users");
+      const queryResultsArray = await compoundSearchDB(data.parameter, "users");
 
       const resultsArray = [];
       if (queryResultsArray === undefined || queryResultsArray.length === 0) {
@@ -109,13 +105,13 @@ function SearchUser() {
       autoHideDuration={2000}
       onClose={snackBarCloseHandler}
     >
-      <Alert
+      <AlertComponent
         onClose={snackBarCloseHandler}
         severity={snackBar.severity}
         sx={{ width: "100%" }}
       >
         {snackBar.message}
-      </Alert>
+      </AlertComponent>
     </Snackbar>
   </BasePage>
   );

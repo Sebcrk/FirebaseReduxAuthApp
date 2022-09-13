@@ -1,26 +1,21 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { functions, db } from "../../firebase";
+import { functions } from "../../firebase";
 import { httpsCallable } from "firebase/functions";
-import LoadingButton from "@mui/lab/LoadingButton";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';import Snackbar from "@mui/material/Snackbar";
 
+import AlertComponent from "../../components/UI/AlertComponent";
 import LoadingButtonComp from "../../components/UI/LoadingButton";
 import InputText from "../../components/UI/InputText";
 import BasePage from "../../components/UI/Wrappers/BasePage";
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+
 
 const baseData = {
-  color: "warning.light",
-  hover: "warning.dark",
-  Icon: PersonAddDisabledIcon,
+  color: "warning",
+  Icon: PersonRemoveIcon,
   title: "Delete User",
   subtitle: "Delete user by ID",
 }
@@ -105,13 +100,13 @@ function DeleteUser() {
         autoHideDuration={3000}
         onClose={snackBarCloseHandler}
       >
-        <Alert
+        <AlertComponent
           onClose={snackBarCloseHandler}
           severity={snackBar.severity}
           sx={{ width: "100%" }}
         >
           {snackBar.message}
-        </Alert>
+        </AlertComponent>
       </Snackbar>
     </BasePage>
   );
