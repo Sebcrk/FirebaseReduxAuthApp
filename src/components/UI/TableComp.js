@@ -8,6 +8,8 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { formatDistanceToNowStrict } from "date-fns";
 
+
+// Separate the components and organize it in a folder
 const searchUserTitles = [
   "Name",
   "Role",

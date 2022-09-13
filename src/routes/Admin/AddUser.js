@@ -14,9 +14,10 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
 
+import AlertComponent from "../../components/UI/AlertComponent";
 import InputText from "../../components/UI/InputText";
+import BasePage from "../../components/UI/Wrappers/BasePage";
 
 const dataArray = [
   { name: "First Name", sm: 6, type: "text" },
@@ -28,9 +29,11 @@ const dataArray = [
   { name: "Password", sm: 12, type: "password" },
 ];
 
-const Alert = React.forwardRef(function Alert(props, ref) {
-  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
+const baseData = {
+  color: "primary.main",
+  Icon: PersonAddIcon,
+  title: "Create New User",
+};
 
 export default function AddUser() {
   const [isLoading, setIsloading] = useState(false);
@@ -66,7 +69,7 @@ export default function AddUser() {
       .then(() => {
         setSnackBar({
           open: true,
-          message: `User ${data.email} has been created`,
+          message: `User ${data.email} has been created.`,
           severity: "success",
         });
         const addUserToDB = httpsCallable(functions, "addUserToDB");
@@ -100,96 +103,88 @@ export default function AddUser() {
     setAdmin(event.target.checked);
   };
 
-
-
   return (
-    <Container component="main" maxWidth="xs">
-      <CssBaseline />
+    <BasePage
+      color={baseData.color}
+      Icon={baseData.Icon}
+      title={baseData.title}
+      maxWidth="xs"
+    >
       <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+        component="form"
+        onSubmit={handleSubmit(addUserHandler)}
+        sx={{ mt: 3 }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
-          <PersonAddIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Create New User
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit(addUserHandler)}
-          sx={{ mt: 3 }}
+        <Grid
+          justifyContent="center"
+          alignItems="center"
+          container
+          spacing={1}
+          rowSpacing={0.1}
         >
-          <Grid container spacing={1} rowSpacing={0.1}>
-            {dataArray.map((data) => {
-              return (
-                <Grid key={data.name} item xs={12} sm={data.sm}>
-                  <InputText
-                    control={control}
-                    name={data.name}
-                    type={data.type}
-                    fullWidth
-                    required
-                  />
-                </Grid>
-              );
-            })}
-            <Grid item xs={6} sm={6}>
-              <FormControlLabel
-                labelPlacement="top"
-                control={
-                  <Checkbox
-                    checked={admin}
-                    onChange={adminCheckHandler}
-                    color="success"
-                  />
-                }
-                label="Make Admin"
-              />
-            </Grid>
-            {admin && (
-              <Grid item xs={6} sm={6}>
+          {dataArray.map((data) => {
+            return (
+              <Grid key={data.name} item xs={12} sm={data.sm}>
                 <InputText
                   control={control}
-                  name="Access Level"
-                  type="number"
-                  required
-                  InputProps={{ inputProps: { min: "1", max: "5", step: "1" } }}
+                  name={data.name}
+                  type={data.type}
                   fullWidth
-                  size="small"
+                  required
                 />
               </Grid>
-            )}
+            );
+          })}
+          <Grid item xs={6} sm={6}>
+            <FormControlLabel
+              label="Make Admin"
+              control={
+                <Checkbox
+                  checked={admin}
+                  onChange={adminCheckHandler}
+                  color="success"
+                />
+              }
+            />
           </Grid>
+          {admin && (
+            <Grid item xs={6} sm={6}>
+              <InputText
+                control={control}
+                name="Access Level"
+                type="number"
+                required
+                InputProps={{ inputProps: { min: "1", max: "5", step: "1" } }}
+                fullWidth
+                size="small"
+              />
+            </Grid>
+          )}
+        </Grid>
 
-          <LoadingButton
-            type="submit"
-            loading={isLoading}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Create new user
-          </LoadingButton>
-        </Box>
+        <LoadingButton
+          type="submit"
+          loading={isLoading}
+          fullWidth
+          variant="contained"
+          sx={{ mt: 3, mb: 2 }}
+        >
+          Create new user
+        </LoadingButton>
       </Box>
       <Snackbar
         open={snackBar.open}
         autoHideDuration={5000}
         onClose={snackBarCloseHandler}
       >
-        <Alert
+        <AlertComponent
           onClose={snackBarCloseHandler}
           severity={snackBar.severity}
           sx={{ width: "100%" }}
         >
           {snackBar.message}
-        </Alert>
+        </AlertComponent>
       </Snackbar>
-    </Container>
+    </BasePage>
   );
 }

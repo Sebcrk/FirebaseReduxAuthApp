@@ -2,22 +2,28 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { functions, db } from "../../firebase";
 import { httpsCallable } from "firebase/functions";
-import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
 import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 
+import LoadingButtonComp from "../../components/UI/LoadingButton";
 import InputText from "../../components/UI/InputText";
+import BasePage from "../../components/UI/Wrappers/BasePage";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+const baseData = {
+  color: "warning.light",
+  hover: "warning.dark",
+  Icon: PersonAddDisabledIcon,
+  title: "Delete User",
+  subtitle: "Delete user by ID",
+}
 
 function DeleteUser() {
   const [isLoading, setIsloading] = useState(false);
@@ -50,7 +56,7 @@ function DeleteUser() {
       .then(() => {
         setSnackBar({
           open: true,
-          message: `User ${data.id} has been deleted`,
+          message: `User ${data.id} has been deleted.`,
           severity: "success",
         });
         resetForm();
@@ -62,57 +68,37 @@ function DeleteUser() {
       });
   };
 
-
-
   return (
-    <Container component="main">
-      <CssBaseline />
+    <BasePage
+      color={baseData.color}
+      Icon={baseData.Icon}
+      title={baseData.title}
+      subtitle={baseData.subtitle}
+    >
       <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+        component="form"
+        onSubmit={handleSubmit(deleteUserHandler)}
+        sx={{ mt: 3 }}
       >
-        <Avatar sx={{ m: 1, bgcolor: (theme) => theme.palette.warning.main }}>
-          <PersonAddDisabledIcon />
-        </Avatar>
-        <Typography component="h1" variant="h5">
-          Delete User
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit(deleteUserHandler)}
-          sx={{ mt: 3 }}
-        >
-          <Grid container spacing={1} rowSpacing={0.1}>
-            <Grid item xs={12} sm={12}>
-              <InputText
-                control={control}
-                name="ID"
-                type="number"
-                fullWidth
-                required
-              />
-            </Grid>
+        <Grid container spacing={1} rowSpacing={0.1}>
+          <Grid item xs={12} sm={12}>
+            <InputText
+              control={control}
+              name="ID"
+              type="number"
+              fullWidth
+              required
+            />
           </Grid>
-
-          <LoadingButton
-            type="submit"
-            loading={isLoading}
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-              bgcolor: (theme) => theme.palette.warning.light,
-              "&:hover": { bgcolor: (theme) => theme.palette.warning.main },
-            }}
-          >
-            Delete user
-          </LoadingButton>
-        </Box>
+        </Grid>
+        <LoadingButtonComp
+        loading={isLoading}
+        variant="contained"
+        color={baseData.color}
+        hover={baseData.hover}
+      >
+        Search
+      </LoadingButtonComp>
       </Box>
       <Snackbar
         open={snackBar.open}
@@ -127,7 +113,7 @@ function DeleteUser() {
           {snackBar.message}
         </Alert>
       </Snackbar>
-    </Container>
+    </BasePage>
   );
 }
 

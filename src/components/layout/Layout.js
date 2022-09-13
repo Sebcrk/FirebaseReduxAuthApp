@@ -83,7 +83,6 @@ const Layout = (props) => {
           <Drawer isOpen={openDrawer} toggleDrawer={toggleDrawer} />
           
         )}
-
         <Box
           component="main"
           sx={{

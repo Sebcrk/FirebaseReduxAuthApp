@@ -85,7 +85,7 @@ function App() {
       <RoutesComp />
       <Snackbar
         open={snackBar.open}
-        autoHideDuration={6000}
+        autoHideDuration={3000}
         onClose={snackBarCloseHandler}
       >
         <Alert

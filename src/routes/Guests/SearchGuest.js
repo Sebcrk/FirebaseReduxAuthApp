@@ -1,23 +1,28 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import Avatar from "@mui/material/Avatar";
-import LoadingButton from "@mui/lab/LoadingButton";
-import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import PersonAddDisabledIcon from "@mui/icons-material/PersonAddDisabled";
+import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
 import TableComp from "../../components/UI/TableComp";
 
+import LoadingButtonComp from "../../components/UI/LoadingButton";
 import searchDB from "../../utils.js/searchDB";
 import InputText from "../../components/UI/InputText";
+import BasePage from "../../components/UI/Wrappers/BasePage";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+
+const baseData = {
+  color: "primary.light",
+  Icon: RecentActorsIcon,
+  title: "Search Guest",
+  subtitle: "Search guest by ID, name or last name",
+};
 
 function SearchGuest() {
   const [isLoading, setIsloading] = useState(false);
@@ -54,7 +59,7 @@ function SearchGuest() {
         setResults();
         setSnackBar({
           open: true,
-          message: "No guest entry found",
+          message: "No guest entry found.",
           severity: "error",
         });
       } else {
@@ -70,54 +75,29 @@ function SearchGuest() {
   };
 
   return (
-    <Container component="main">
-      <CssBaseline />
+    <BasePage
+      color={baseData.color}
+      Icon={baseData.Icon}
+      title={baseData.title}
+      subtitle={baseData.subtitle}
+    >
       <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+        component="form"
+        onSubmit={handleSubmit(searchGuestHandler)}
+        sx={{ mt: 3 }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "primary.light" }}>
-          <PersonAddDisabledIcon />
-        </Avatar>
-        <Typography component="h2" variant="h5">
-          Search Guest
-        </Typography>
-        <Typography variant="body2" color="textSecondary" align="center">
-          Search guest by ID, name or last name
-        </Typography>
-        <Box
-          component="form"
-          onSubmit={handleSubmit(searchGuestHandler)}
-          sx={{ mt: 3 }}
-        >
-          <Grid container spacing={1} rowSpacing={0.1}>
-            <Grid item xs={12} sm={12}>
-              <InputText
-                control={control}
-                name="Parameter"
-                fullWidth
-                required
-              />
-            </Grid>
+        <Grid container spacing={1} rowSpacing={0.1}>
+          <Grid item xs={12} sm={12}>
+            <InputText control={control} name="Parameter" fullWidth required />
           </Grid>
-          <LoadingButton
-            type="submit"
-            loading={isLoading}
-            fullWidth
-            variant="contained"
-            sx={{
-              mt: 3,
-              mb: 2,
-              bgcolor: "primary.light",
-            }}
-          >
-            Search
-          </LoadingButton>
-        </Box>
+        </Grid>
+        <LoadingButtonComp
+          loading={isLoading}
+          variant="contained"
+          color={baseData.color}
+        >
+          Search
+        </LoadingButtonComp>
       </Box>
       {results && <TableComp type="SearchGuest" dataInfo={results} />}
       <Snackbar
@@ -133,8 +113,55 @@ function SearchGuest() {
           {snackBar.message}
         </Alert>
       </Snackbar>
-    </Container>
+    </BasePage>
   );
 }
 
 export default SearchGuest;
+
+{
+  /* <Box
+component="form"
+onSubmit={handleSubmit(searchGuestHandler)}
+sx={{ mt: 3 }}
+>
+<Grid container spacing={1} rowSpacing={0.1}>
+  <Grid item xs={12} sm={12}>
+    <InputText
+      control={control}
+      name="Parameter"
+      fullWidth
+      required
+    />
+  </Grid>
+</Grid>
+<LoadingButton
+  type="submit"
+  loading={isLoading}
+  fullWidth
+  variant="contained"
+  sx={{
+    mt: 3,
+    mb: 2,
+    bgcolor: "primary.light",
+  }}
+>
+  Search
+</LoadingButton>
+</Box>
+</Box>
+{results && <TableComp type="SearchGuest" dataInfo={results} />}
+<Snackbar
+open={snackBar.open}
+autoHideDuration={2000}
+onClose={snackBarCloseHandler}
+>
+<Alert
+onClose={snackBarCloseHandler}
+severity={snackBar.severity}
+sx={{ width: "100%" }}
+>
+{snackBar.message}
+</Alert>
+</Snackbar> */
+}
