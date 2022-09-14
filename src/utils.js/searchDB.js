@@ -48,23 +48,3 @@ export const compoundSearchDB = async (parameter, collectionID) => {
     console.log(error.message);
   }
 };
-
-// export const searchDB = async () => {
-//   try {
-//     const guestsRef = collection(db, "guests");
-
-//     const q = query(guestsRef, orderBy("dateOfEntry", "desc"), limit(8));
-
-//     const results = [];
-//     const queryResult = await onSnapshot(q, (querySnapshot) => {
-//       querySnapshot.forEach((doc) => {  
-//         results.push(doc.data());
-//       });
-//     });
-//     console.log(results);
-//     return results;
-//   } catch (error) {
-//     console.log(error.message);
-//     return error.message;
-//   }
-// };

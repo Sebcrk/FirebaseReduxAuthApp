@@ -3,7 +3,6 @@ import { useForm } from "react-hook-form";
 import { functions } from "../../firebase";
 import { httpsCallable } from "firebase/functions";
 
-import LoadingButton from "@mui/lab/LoadingButton";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
@@ -11,6 +10,7 @@ import Box from "@mui/material/Box";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import Snackbar from "@mui/material/Snackbar";
 
+import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
 import AlertComponent from "../../components/UI/AlertComponent";
 import InputText from "../../components/UI/InputText";
 import BasePage from "../../components/UI/Wrappers/BasePage";
@@ -156,15 +156,13 @@ export default function AddUser() {
           )}
         </Grid>
 
-        <LoadingButton
-          type="submit"
-          loading={isLoading}
-          fullWidth
-          variant="contained"
-          sx={{ mt: 3, mb: 2 }}
-        >
-          Add new user
-        </LoadingButton>
+        <LoadingButtonComp
+        loading={isLoading}
+        variant="contained"
+        color={baseData.color}
+      >
+        Add New User
+      </LoadingButtonComp>
       </Box>
       <Snackbar
         open={snackBar.open}

@@ -8,7 +8,7 @@ import Snackbar from "@mui/material/Snackbar";
 
 import AlertComponent from "../../components/UI/AlertComponent";
 import TableComp from "../../components/UI/TableComp";
-import LoadingButtonComp from "../../components/UI/LoadingButton";
+import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
 import {compoundSearchDB} from "../../utils.js/searchDB";
 import InputText from "../../components/UI/InputText";
 import BasePage from "../../components/UI/Wrappers/BasePage";

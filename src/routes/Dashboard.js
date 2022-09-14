@@ -11,22 +11,37 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import Paper from "@mui/material/Paper";
+import Backdrop from '@mui/material/Backdrop';
+import LinearProgress from '@mui/material/LinearProgress';
+
 import TableComp from "../components/UI/TableComp";
+import OccupancyChart from "../components/Dashboard/OccupancyChart";
+import DailyEntryChart from "../components/Dashboard/DailyEntryChart";
+import GuestTypeChart from "../components/Dashboard/GuestTypeChart";
+import DestinationChart from "../components/Dashboard/DestinationChart";
 
 const dashboardItems = [
-  { Comp: TableComp, xs: 12, md: 6, lg: 6 },
-  { Comp: TableComp, xs: 6, md: 3, lg: 3 },
-  { Comp: TableComp, xs: 6, md: 3, lg: 3 },
+  { Comp: DailyEntryChart, xs: 12, md: 6, lg: 6 },
+  { Comp: GuestTypeChart, xs: 6, md: 3, lg: 3 },
+  { Comp: OccupancyChart, xs: 6, md: 3, lg: 3 },
   { Comp: TableComp, xs: 12, md: 9, lg: 9 },
-  { Comp: TableComp, xs: 12, md: 3, lg: 3 },
+  { Comp: DestinationChart, xs: 12, md: 3, lg: 3 },
 ];
 
 function DashboardContent() {
   const [lastGuests, setLastGuests] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  const backdropCloseHandler = () => {
+    setLoading(false);
+  };
+  
   useEffect(() => {
     let isSubscribed = true;
 
+    if(isSubscribed) {
+      setLoading(true)
+    }
     const guestsRef = collection(db, "guests");
     const q = query(guestsRef, orderBy("dateOfEntry", "desc"), limit(8));
 
@@ -41,6 +56,8 @@ function DashboardContent() {
         console.log(results);
         if (isSubscribed) {
           setLastGuests(results);
+          setLoading(false)
+
         }
       }
     });
@@ -54,7 +71,15 @@ function DashboardContent() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Box component="div" sx={{ p: 2, pl: 8, flexGrow: 1, overflow: "auto" }}>
-        <Grid container spacing={2}>
+      {/* <Backdrop
+        sx={{  zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackdrop}
+        onClick={backdropCloseHandler}
+      >
+        <LinearProgress />
+      </Backdrop> */}
+      {loading && <LinearProgress />}
+       <Grid container spacing={2}>
           {dashboardItems.map((item, index) => {            
             const DashboardItem = item.Comp
             return (
@@ -67,7 +92,7 @@ function DashboardContent() {
                   height: 300,
                 }}
               >
-                <DashboardItem type={"SearchGuest"} dataInfo={lastGuests}/>
+                {!loading && <DashboardItem type={"SearchGuest"} dataInfo={lastGuests}/>}
               </Paper>
             </Grid>
           )})}

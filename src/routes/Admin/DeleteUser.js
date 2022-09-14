@@ -7,7 +7,7 @@ import Grid from "@mui/material/Grid";
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';import Snackbar from "@mui/material/Snackbar";
 
 import AlertComponent from "../../components/UI/AlertComponent";
-import LoadingButtonComp from "../../components/UI/LoadingButton";
+import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
 import InputText from "../../components/UI/InputText";
 import BasePage from "../../components/UI/Wrappers/BasePage";
 
