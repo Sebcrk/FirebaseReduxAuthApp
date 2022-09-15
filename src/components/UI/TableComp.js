@@ -8,7 +8,6 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 // import { formatDistanceToNowStrict } from "date-fns";
 
-
 // Separate the components and organize it in a folder
 const searchUserTitles = [
   "Name",
@@ -43,16 +42,13 @@ const SearchUserData = ({ dataInfo }) => {
           .toLocaleString("en-US", { dateStyle: "long" })}
       </TableCell>
       <TableCell align="center">
-        {data.createdOn.toDate().toLocaleString("en-US", {dateStyle: "long",timeStyle: 'short'})}
+        {data.createdOn
+          .toDate()
+          .toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}
       </TableCell>
     </TableRow>
   ));
 };
-
-
-
-
-
 
 const searchGuestTitles = [
   "Name",
@@ -73,7 +69,7 @@ const SearchGuestTitleComp = () => {
 
 const SearchGuestData = ({ dataInfo }) => {
   return dataInfo.map((data, index) => (
-    <TableRow key={index} >
+    <TableRow key={index}>
       <TableCell align="center">
         {data.firstName + " " + data.lastName}
       </TableCell>
@@ -81,22 +77,21 @@ const SearchGuestData = ({ dataInfo }) => {
       <TableCell align="center">{data.role}</TableCell>
       <TableCell align="center">{data.entrance}</TableCell>
       <TableCell align="center">
-      {data.dateOfEntry.toDate().toLocaleString("en-US", {dateStyle: "long",timeStyle: 'short'})}
-      {/* {formatDistanceToNowStrict(data.dateOfEntry.toDate(), { addSuffix: true })} */}
+        {data.dateOfEntry
+          .toDate()
+          .toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}
+        {/* {formatDistanceToNowStrict(data.dateOfEntry.toDate(), { addSuffix: true })} */}
       </TableCell>
       <TableCell align="center">{data.destination}</TableCell>
     </TableRow>
   ));
 };
 
-
-
-
 export default function TableComp(props) {
   const { type, dataInfo } = props;
-
+  console.log(dataInfo);
   return (
-    <TableContainer sx={{mt: 2}}>
+    <TableContainer sx={{ mt: 2 }}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="Search table">
         <TableHead>
           <TableRow>

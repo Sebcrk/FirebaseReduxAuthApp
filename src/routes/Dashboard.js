@@ -13,7 +13,6 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import Card from '@mui/material/Card';
-import Paper from "@mui/material/Paper";
 import LinearProgress from "@mui/material/LinearProgress";
 
 import TableComp from "../components/UI/TableComp";
@@ -60,6 +59,7 @@ export default function Dashboard() {
         querySnapshot.forEach((doc) => {
           results.push(doc.data());
         });
+        console.log(results);
         if (isSubscribed) {
           setGuests(results);
           setLoading(false);
@@ -86,7 +86,7 @@ export default function Dashboard() {
               return (
                 <Grid key={index} xs={item.xs} md={item.md} lg={item.lg}>
                   <Card
-                    elevation={12}
+                    elevation={5}
                     sx={{
                       display: "flex",
                       flexDirection: "column",

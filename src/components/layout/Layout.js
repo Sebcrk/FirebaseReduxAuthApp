@@ -30,6 +30,15 @@ const Layout = (props) => {
             main: "#121212"
           }
         },
+        breakpoints: {
+          values: {
+            xs: 0,
+            sm: 600,
+            md: 1100,
+            lg: 1200,
+            xl: 1536,
+          },
+        },
       }),
     [prefersDarkMode]
   );
@@ -74,7 +83,7 @@ const Layout = (props) => {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Redux Auth App
+              Firebase Redux Auth App
             </Typography>
             <MainNavigation />
           </Toolbar>

@@ -37,7 +37,7 @@ function OccupancyChart(props) {
 
   return (
     < >
-     <CardMedia sx={{mt: 1}}>
+     <CardMedia sx={{mt: 2}}>
      <ResponsiveContainer width="100%" height={props.size}>
         <RadialBarChart
           cx={"50%"}

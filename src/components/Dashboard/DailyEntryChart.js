@@ -9,39 +9,19 @@ import {
   Tooltip,
   XAxis,
   YAxis,
-  Label,
   ResponsiveContainer,
   Legend
 } from "recharts";
 import getHours from "date-fns/getHours";
 
-const CustomTooltip = ({ active, payload, label, emptyQuery }) => {
-  if (active) {
-    if (emptyQuery) {
-      return (
-        <div className="custom-tooltip">
-          <p className="label">{label}</p>
-        </div>
-      );
-    } else {
-      return (
-        <div className="custom-tooltip">
-          <p className="label">{`Accumulated amount: ${payload[1].value}`}</p>
-          <p className="label">{`Amount of entries: ${payload[0].value}`}</p>
-          <p className="label">{`Hour: ${label}`}</p>
-        </div>
-      );
-    }
-  }
-  return null;
-};
+
+
 function DailyEntryChart(props) {
   const [data, setData] = React.useState([]);
-  const [emptyQuery, setEmptyQuery] = React.useState(true);
 
   useEffect(() => {
     if (props.dataInfo.length === 0) {
-      setData([{ time: "No entries today", value: "", value1: "" }]);
+      setData([{ time: "No entries today", value: "0", value1: "0" }]);
     } else {
       const hourGroup = [];
       props.dataInfo.forEach((entry) => {
@@ -72,7 +52,6 @@ function DailyEntryChart(props) {
         });
       });
       setData(dataArray);
-      setEmptyQuery(false);
     }
   }, [props.dataInfo]);
 
@@ -90,9 +69,8 @@ function DailyEntryChart(props) {
             <XAxis dataKey="time" stroke="#90a4ae" />
             <YAxis yAxisId="right" orientation="right" stroke="#0088FE" />
             <YAxis yAxisId="left" stroke="#4caf50" />
-            <Tooltip wrapperStyle={{outline: "none"}} contentStyle={{color: "#90a4ae", backgroundColor: "#424242", borderRadius: "10px"}}/>
+            <Tooltip wrapperStyle={{outline: "none"}} contentStyle={{color: "white", backgroundColor: "#424242", borderRadius: "10px"}}/>
             <Bar
-              isAnimationActive={false}
               yAxisId="left"
               dataKey="value"
               barSize={20}
@@ -100,7 +78,6 @@ function DailyEntryChart(props) {
               name="Amount of entries"              
             />
             <Line
-              isAnimationActive={false}
               yAxisId="right"
               type="linear"
               strokeWidth={3}
