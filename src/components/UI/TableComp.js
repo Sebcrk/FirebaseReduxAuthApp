@@ -89,7 +89,6 @@ const SearchGuestData = ({ dataInfo }) => {
 
 export default function TableComp(props) {
   const { type, dataInfo } = props;
-  console.log(dataInfo);
   return (
     <TableContainer sx={{ mt: 2 }}>
       <Table sx={{ minWidth: 650 }} size="small" aria-label="Search table">

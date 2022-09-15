@@ -1,0 +1,2 @@
+(this["webpackJsonpfirebase-redux-auth-app"]=this["webpackJsonpfirebase-redux-auth-app"]||[]).push([[10],{442:function(e,r,i){e.exports={profile:"UserProfile_profile__OZmt1"}},611:function(e,r,i){"use strict";i.r(r);var s=i(442),t=i.n(s),a=i(2);r.default=function(){return Object(a.jsx)("main",{className:t.a.profile,children:Object(a.jsx)("h2",{children:"My User Profile"})})}}}]);
+//# sourceMappingURL=10.62279696.chunk.js.map

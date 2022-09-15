@@ -22,11 +22,11 @@ import GuestTypeChart from "../components/Dashboard/GuestTypeChart";
 import DestinationChart from "../components/Dashboard/DestinationChart";
 
 const dashboardItems = [
-  { Comp: DailyEntryChart, xs: 12, md: 6, lg: 6 },
-  { Comp: GuestTypeChart, xs: 6, md: 3, lg: 3 },
-  { Comp: OccupancyChart, xs: 6, md: 3, lg: 3 },
-  { Comp: TableComp, xs: 12, md: 9, lg: 9 },
-  { Comp: DestinationChart, xs: 12, md: 3, lg: 3 },
+  { Comp: DailyEntryChart, xs: 12, sm: 12, md: 12, lg: 6 },
+  { Comp: GuestTypeChart, xs: 12, sm: 6, md: 4, lg: 3 },
+  { Comp: OccupancyChart, xs: 12, sm: 6, md: 4, lg: 3 },
+  { Comp: DestinationChart, xs: 12, sm: 12, md: 4, lg: 3 },
+  { Comp: TableComp,      xs: 12, sm: 12, md: 12, lg: 9 },
 ];
 
 export default function Dashboard() {
@@ -36,7 +36,7 @@ export default function Dashboard() {
   const today = new Date();
   const start = startOfDay(today);
   const end = endOfDay(today);
-  const itemsSize = 220 
+  const itemsSize = 240 
 
   useEffect(() => {
     let isSubscribed = true;
@@ -59,7 +59,6 @@ export default function Dashboard() {
         querySnapshot.forEach((doc) => {
           results.push(doc.data());
         });
-        console.log(results);
         if (isSubscribed) {
           setGuests(results);
           setLoading(false);
@@ -84,13 +83,13 @@ export default function Dashboard() {
             {dashboardItems.map((item, index) => {
               const DashboardItem = item.Comp;
               return (
-                <Grid key={index} xs={item.xs} md={item.md} lg={item.lg}>
+                <Grid key={index} xs={item.xs} sm={item.sm} md={item.md} lg={item.lg}>
                   <Card
                     elevation={5}
                     sx={{
                       display: "flex",
                       flexDirection: "column",
-                      height: 320,
+                      height: 340,
                     }}
                   >
                     <DashboardItem size={itemsSize} type={"SearchGuest"} dataInfo={guests} />
