@@ -72,8 +72,8 @@ const SearchGuestTitleComp = () => {
 };
 
 const SearchGuestData = ({ dataInfo }) => {
-  return dataInfo.map((data) => (
-    <TableRow key={data.id} >
+  return dataInfo.map((data, index) => (
+    <TableRow key={index} >
       <TableCell align="center">
         {data.firstName + " " + data.lastName}
       </TableCell>

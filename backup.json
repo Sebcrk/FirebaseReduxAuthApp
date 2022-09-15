@@ -1,0 +1,263 @@
+{
+  "__collections__": {
+    "guests": {
+      "9CILmfCTjbWAdbJMKkzC": {
+        "id": "2",
+        "entrance": "4",
+        "role": "GUEST",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104412, "_nanoseconds": 562000000 }
+        },
+        "destination": "THEATER",
+        "firstName": "CAROLINE",
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663105159, "_nanoseconds": 999000000 }
+        },
+        "lastName": "MACHACÓN",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBw": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104859, "_nanoseconds": 211000000 }
+        },
+        "destination": "LIBRARY",
+        "lastName": "FLOREZ",
+        "role": "STUDENT",
+        "firstName": "SAMUEL",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "4",
+        "entrance": "7",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBz": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663112760, "_nanoseconds": 211000000 }
+        },
+        "destination": "AUDITORIUM",
+        "lastName": "FLOREZ",
+        "role": "STUDENT",
+        "firstName": "REYNALDO",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "5",
+        "entrance": "7",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBa": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104859, "_nanoseconds": 211000000 }
+        },
+        "destination": "THEATER",
+        "lastName": "PONCE",
+        "role": "STUDENT",
+        "firstName": "VALERY",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "1",
+        "entrance": "7",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBb": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104859, "_nanoseconds": 211000000 }
+        },
+        "destination": "LIBRARY",
+        "lastName": "FLOREZ",
+        "role": "STUDENT",
+        "firstName": "LUCIANA",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "6",
+        "entrance": "7",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBc": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104859, "_nanoseconds": 211000000 }
+        },
+        "destination": "COLISEUM",
+        "lastName": "MIRQUE",
+        "role": "STUDENT",
+        "firstName": "ANGIE",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "7",
+        "entrance": "7",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBd": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104859, "_nanoseconds": 211000000 }
+        },
+        "destination": "LIBRARY",
+        "lastName": "FLOREZ",
+        "role": "STUDENT",
+        "firstName": "LUCIANA",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "1",
+        "entrance": "7",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBe": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104859, "_nanoseconds": 211000000 }
+        },
+        "destination": "LIBRARY",
+        "lastName": "FLOREZ",
+        "role": "STUDENT",
+        "firstName": "SAMUEL",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "4",
+        "entrance": "7",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBf": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104859, "_nanoseconds": 211000000 }
+        },
+        "destination": "LIBRARY",
+        "lastName": "FLOREZ",
+        "role": "STUDENT",
+        "firstName": "LUCIANA",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "1",
+        "entrance": "7",
+        "__collections__": {}
+      },
+      "Y1qL1PRTLd1GgrKm5GBg": {
+        "dateOfEntry": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663104859, "_nanoseconds": 211000000 }
+        },
+        "destination": "LIBRARY",
+        "lastName": "FLOREZ",
+        "role": "STUDENT",
+        "firstName": "LUCIANA",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1349672400, "_nanoseconds": 457000000 }
+        },
+        "id": "1",
+        "entrance": "7",
+        "__collections__": {}
+      }
+    },
+    "users": {
+      "0": {
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1662958800, "_nanoseconds": 0 }
+        },
+        "email": "notadmin@test.com",
+        "role": "USER",
+        "firstName": "NORMAL",
+        "lastName": "USER",
+        "accessLevel": "N/A",
+        "id": "0",
+        "createdOn": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663020404, "_nanoseconds": 65000000 }
+        },
+        "__collections__": {}
+      },
+      "1": {
+        "id": "1",
+        "lastName": "ONE",
+        "accessLevel": "1",
+        "role": "ADMIN",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1662958800, "_nanoseconds": 0 }
+        },
+        "createdOn": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663013908, "_nanoseconds": 55000000 }
+        },
+        "email": "admin1@admin.com",
+        "firstName": "ADMIN",
+        "__collections__": {}
+      },
+      "2": {
+        "createdOn": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1663020151, "_nanoseconds": 27000000 }
+        },
+        "accessLevel": "2",
+        "lastName": "TWO",
+        "id": "2",
+        "email": "admin2@admin.com",
+        "role": "ADMIN",
+        "firstName": "ADMIN",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1662958800, "_nanoseconds": 0 }
+        },
+        "__collections__": {}
+      },
+      "1143466498": {
+        "lastName": "PONCE",
+        "accessLevel": "2",
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 915166800, "_nanoseconds": 0 }
+        },
+        "firstName": "VALERY",
+        "id": "1143466498",
+        "createdOn": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1662842316, "_nanoseconds": 716000000 }
+        },
+        "email": "valerygisselponce01@gmail.com",
+        "role": "ADMIN",
+        "__collections__": {}
+      },
+      "1234092153": {
+        "dateOfBirth": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 902293200, "_nanoseconds": 0 }
+        },
+        "firstName": "SEBASTIAN",
+        "role": "ADMIN",
+        "accessLevel": "5",
+        "email": "sdvilla@uninorte.edu.co",
+        "id": "1234092153",
+        "lastName": "VILLA",
+        "createdOn": {
+          "__datatype__": "timestamp",
+          "value": { "_seconds": 1662683833, "_nanoseconds": 11000000 }
+        },
+        "__collections__": {}
+      }
+    }
+  }
+}

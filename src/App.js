@@ -24,7 +24,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (userData) => {
+    const unsubscribe = onAuthStateChanged(auth, (userData) => {
       if (userData) {
         userData.getIdTokenResult().then((idTokenResult) => {
           const { name, email, isAdmin, user_id, accessLevel } =
@@ -68,6 +68,7 @@ function App() {
         return console.log("No user found");
       }
     });
+    return unsubscribe
   }, []);
 
   const snackBarCloseHandler = (event, reason) => {

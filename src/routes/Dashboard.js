@@ -6,13 +6,14 @@ import {
   orderBy,
   limit,
   onSnapshot,
+  where,
 } from "firebase/firestore";
+import { startOfDay, endOfDay } from "date-fns";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
 import Paper from "@mui/material/Paper";
-import Backdrop from '@mui/material/Backdrop';
-import LinearProgress from '@mui/material/LinearProgress';
+import LinearProgress from "@mui/material/LinearProgress";
 
 import TableComp from "../components/UI/TableComp";
 import OccupancyChart from "../components/Dashboard/OccupancyChart";
@@ -29,21 +30,26 @@ const dashboardItems = [
 ];
 
 function DashboardContent() {
-  const [lastGuests, setLastGuests] = useState([]);
+  const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const backdropCloseHandler = () => {
-    setLoading(false);
-  };
-  
+  const today = new Date();
+  const start = startOfDay(today);
+  const end = endOfDay(today);
   useEffect(() => {
     let isSubscribed = true;
 
-    if(isSubscribed) {
-      setLoading(true)
+    if (isSubscribed) {
+      setLoading(true);
     }
     const guestsRef = collection(db, "guests");
-    const q = query(guestsRef, orderBy("dateOfEntry", "desc"), limit(8));
+    const q = query(
+      guestsRef,
+      where("dateOfEntry", ">=", start),
+      where("dateOfEntry", "<=", end),
+      orderBy("dateOfEntry", "desc"),
+      limit(10)
+    );
 
     onSnapshot(q, (querySnapshot) => {
       if (querySnapshot.size === 0) {
@@ -53,11 +59,9 @@ function DashboardContent() {
         querySnapshot.forEach((doc) => {
           results.push(doc.data());
         });
-        console.log(results);
         if (isSubscribed) {
-          setLastGuests(results);
-          setLoading(false)
-
+          setGuests(results);
+          setLoading(false);
         }
       }
     });
@@ -71,88 +75,28 @@ function DashboardContent() {
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Box component="div" sx={{ p: 2, pl: 8, flexGrow: 1, overflow: "auto" }}>
-      {/* <Backdrop
-        sx={{  zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={openBackdrop}
-        onClick={backdropCloseHandler}
-      >
-        <LinearProgress />
-      </Backdrop> */}
-      {loading && <LinearProgress />}
-       <Grid container spacing={2}>
-          {dashboardItems.map((item, index) => {            
-            const DashboardItem = item.Comp
-            return (
-            <Grid key={index} xs={item.xs} md={item.md} lg={item.lg}>
-              <Paper
-                elevation={12}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: 300,
-                }}
-              >
-                {!loading && <DashboardItem type={"SearchGuest"} dataInfo={lastGuests}/>}
-              </Paper>
-            </Grid>
-          )})}
-          {/* <Grid item xs={12} md={6} lg={6}>
-            <Paper
-              elevation={12}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: 300,
-              }}
-            >
-            </Paper>
+        {loading && <LinearProgress />}
+        {!loading && (
+          <Grid container spacing={2}>
+            {dashboardItems.map((item, index) => {
+              const DashboardItem = item.Comp;
+              return (
+                <Grid key={index} xs={item.xs} md={item.md} lg={item.lg}>
+                  <Paper
+                    elevation={12}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      height: 320,
+                    }}
+                  >
+                    <DashboardItem type={"SearchGuest"} dataInfo={guests} />
+                  </Paper>
+                </Grid>
+              );
+            })}
           </Grid>
-          <Grid item xs={6} md={3} lg={3}>
-            <Paper
-              elevation={12}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: 300,
-              }}
-            >
-            </Paper>
-          </Grid>
-          <Grid item xs={6} md={3} lg={3}>
-            <Paper
-              elevation={12}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: 300,
-              }}
-            >
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={9} lg={9}>
-            <Paper
-              elevation={12}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: 300,
-              }}
-            >
-              <TableComp type={"SearchGuest"} dataInfo={lastGuests} />
-            </Paper>
-          </Grid>
-          <Grid item xs={12} md={3} lg={3}>
-            <Paper
-              elevation={12}
-              sx={{
-                display: "flex",
-                flexDirection: "column",
-                height: 300,
-              }}
-            >
-            </Paper>
-          </Grid> */}
-        </Grid>
+        )}
       </Box>
     </Box>
   );
