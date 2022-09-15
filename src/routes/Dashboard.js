@@ -12,6 +12,7 @@ import { startOfDay, endOfDay } from "date-fns";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
+import Card from '@mui/material/Card';
 import Paper from "@mui/material/Paper";
 import LinearProgress from "@mui/material/LinearProgress";
 
@@ -29,19 +30,18 @@ const dashboardItems = [
   { Comp: DestinationChart, xs: 12, md: 3, lg: 3 },
 ];
 
-function DashboardContent() {
+export default function Dashboard() {
   const [guests, setGuests] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const today = new Date();
   const start = startOfDay(today);
   const end = endOfDay(today);
+  const itemsSize = 220 
+
   useEffect(() => {
     let isSubscribed = true;
 
-    if (isSubscribed) {
-      setLoading(true);
-    }
     const guestsRef = collection(db, "guests");
     const q = query(
       guestsRef,
@@ -52,8 +52,9 @@ function DashboardContent() {
     );
 
     onSnapshot(q, (querySnapshot) => {
-      if (querySnapshot.size === 0) {
+      if (querySnapshot.empty) {
         console.log("No guests have entered yet.");
+        setLoading(false)
       } else {
         const results = [];
         querySnapshot.forEach((doc) => {
@@ -64,6 +65,8 @@ function DashboardContent() {
           setLoading(false);
         }
       }
+      
+
     });
 
     return () => {
@@ -77,12 +80,12 @@ function DashboardContent() {
       <Box component="div" sx={{ p: 2, pl: 8, flexGrow: 1, overflow: "auto" }}>
         {loading && <LinearProgress />}
         {!loading && (
-          <Grid container spacing={2}>
+          <Grid  container spacing={2}>
             {dashboardItems.map((item, index) => {
               const DashboardItem = item.Comp;
               return (
                 <Grid key={index} xs={item.xs} md={item.md} lg={item.lg}>
-                  <Paper
+                  <Card
                     elevation={12}
                     sx={{
                       display: "flex",
@@ -90,8 +93,8 @@ function DashboardContent() {
                       height: 320,
                     }}
                   >
-                    <DashboardItem type={"SearchGuest"} dataInfo={guests} />
-                  </Paper>
+                    <DashboardItem size={itemsSize} type={"SearchGuest"} dataInfo={guests} />
+                  </Card>
                 </Grid>
               );
             })}
@@ -100,8 +103,4 @@ function DashboardContent() {
       </Box>
     </Box>
   );
-}
-
-export default function Dashboard() {
-  return <DashboardContent />;
 }

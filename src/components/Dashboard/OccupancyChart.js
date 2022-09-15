@@ -1,5 +1,9 @@
 import React from "react";
-import { Typography } from "@mui/material";
+import Typography from '@mui/material/Typography';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+
 import {
   RadialBarChart,
   RadialBar,
@@ -10,13 +14,9 @@ import {
 
 //need to add a Card for better spacing
 function OccupancyChart(props) {
-  const totalPeople = 60;
-  // const totalPeople = props.dataInfo.length
-  const size = 210;
+  // const totalPeople = 60;
+  const totalPeople = props.dataInfo.length
 
-  if (props.dataInfo.length === 0) {
-    return;
-  }
   
   const colorCondition = () => {
     if (totalPeople < 70) {
@@ -36,15 +36,16 @@ function OccupancyChart(props) {
   ];
 
   return (
-    <>
-      <ResponsiveContainer width="100%" height={size}>
+    < >
+     <CardMedia sx={{mt: 1}}>
+     <ResponsiveContainer width="100%" height={props.size}>
         <RadialBarChart
           cx={"50%"}
-          cy={"50%"}
+          cy={props.size / 2}
           startAngle={90}
           endAngle={-270}
-          outerRadius={size / 2}
-          innerRadius={size / 3}
+          outerRadius={props.size / 2}
+          innerRadius={props.size / 3}
           barSize={30}
           data={data}
         >
@@ -52,7 +53,7 @@ function OccupancyChart(props) {
           <RadialBar background dataKey="value" />
           <text
               x={"50%"}
-              y={size / 2}
+              y={props.size / 2}
               textAnchor="middle"
               dominantBaseline="middle"
               fill={colorCondition()}
@@ -61,18 +62,19 @@ function OccupancyChart(props) {
             </text>
         </RadialBarChart>
       </ResponsiveContainer>
-
-      <Typography sx={{ ml: 1 }} variant="h5" component="h2">
+     </CardMedia>
+     <CardContent>      
+     <Typography variant="h5" component="h2">
         Current occupancy
       </Typography>
       <Typography
-        sx={{ ml: 1 }}
         variant="body2"
         color="textSecondary"
         component="p"
       >
-        Total amount of people currently in the site
+        Current amount of people in the site
       </Typography>
+     </CardContent>
     </>
   );
 }
