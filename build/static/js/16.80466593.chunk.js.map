@@ -1,1 +1,0 @@
-{"version":3,"sources":["routes/Guests/Schedule.js"],"names":["Schedule"],"mappings":"2IAAA,uBAQeA,UANf,WACE,OACE","file":"static/js/16.80466593.chunk.js","sourcesContent":["import React from 'react'\r\n\r\nfunction Schedule() {\r\n  return (\r\n    <div>Schedule</div>\r\n  )\r\n}\r\n\r\nexport default Schedule"],"sourceRoot":""}

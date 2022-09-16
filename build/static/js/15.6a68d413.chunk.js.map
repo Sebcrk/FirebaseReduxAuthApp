@@ -1,1 +1,0 @@
-{"version":3,"sources":["routes/Guests/Reports.js"],"names":["Reports"],"mappings":"2IAAA,uBAQeA,UANf,WACE,OACE","file":"static/js/15.6a68d413.chunk.js","sourcesContent":["import React from 'react'\r\n\r\nfunction Reports() {\r\n  return (\r\n    <div>Reports</div>\r\n  )\r\n}\r\n\r\nexport default Reports"],"sourceRoot":""}

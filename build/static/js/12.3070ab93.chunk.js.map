@@ -1,1 +1,0 @@
-{"version":3,"sources":["routes/Admin/BanGuests.js"],"names":["BanGuests"],"mappings":"2IAAA,uBAQeA,UANf,WACE,OACE","file":"static/js/12.3070ab93.chunk.js","sourcesContent":["import React from 'react'\r\n\r\nfunction BanGuests() {\r\n  return (\r\n    <div>BanGuests</div>\r\n  )\r\n}\r\n\r\nexport default BanGuests"],"sourceRoot":""}

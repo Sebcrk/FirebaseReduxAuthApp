@@ -1,1 +1,0 @@
-{"version":3,"sources":["routes/Validation.js"],"names":["Validation"],"mappings":"2IAAA,uBAQeA,UANf,WACE,OACE","file":"static/js/18.b3a458e4.chunk.js","sourcesContent":["import React from 'react'\r\n\r\nfunction Validation() {\r\n  return (\r\n    <div>Validation</div>\r\n  )\r\n}\r\n\r\nexport default Validation"],"sourceRoot":""}

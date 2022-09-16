@@ -1,1 +1,0 @@
-{"version":3,"sources":["routes/Admin/EditUser.js"],"names":["EditUser"],"mappings":"2IAAA,uBAQeA,UANf,WACE,OACE","file":"static/js/13.8618c768.chunk.js","sourcesContent":["import React from 'react'\r\n\r\nfunction EditUser() {\r\n  return (\r\n    <div>EditUser</div>\r\n  )\r\n}\r\n\r\nexport default EditUser"],"sourceRoot":""}

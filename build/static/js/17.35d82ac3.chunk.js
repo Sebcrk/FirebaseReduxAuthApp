@@ -1,2 +1,0 @@
-(this["webpackJsonpfirebase-redux-auth-app"]=this["webpackJsonpfirebase-redux-auth-app"]||[]).push([[17],{630:function(e,t,a){"use strict";a.r(t);var s=a(2);t.default=function(){return Object(s.jsx)("div",{className:"centered",children:Object(s.jsx)("p",{children:"Page not found"})})}}}]);
-//# sourceMappingURL=17.35d82ac3.chunk.js.map

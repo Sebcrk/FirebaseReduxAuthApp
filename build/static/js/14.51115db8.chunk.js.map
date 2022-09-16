@@ -1,1 +1,0 @@
-{"version":3,"sources":["routes/Guests/Map.js"],"names":["Map"],"mappings":"2IAAA,uBAQeA,UANf,WACE,OACE","file":"static/js/14.51115db8.chunk.js","sourcesContent":["import React from 'react'\r\n\r\nfunction Map() {\r\n  return (\r\n    <div>Map</div>\r\n  )\r\n}\r\n\r\nexport default Map"],"sourceRoot":""}

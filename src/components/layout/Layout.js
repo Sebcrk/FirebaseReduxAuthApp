@@ -114,7 +114,6 @@ import List from "@mui/material/List";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MainNavigation from "./MainNavigation";
@@ -128,14 +127,14 @@ const AppBar = styled(MuiAppBar, {
   zIndex: theme.zIndex.drawer + 1,
   transition: theme.transitions.create(["width", "margin"], {
     easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.shortest,
+    duration: theme.transitions.duration.leavingScreen,
   }),
   ...(open && {
     marginLeft: drawerWidth,
     width: `calc(100% - ${drawerWidth}px)`,
     transition: theme.transitions.create(["width", "margin"], {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.shortest,
+      duration: theme.transitions.duration.enteringScreen,
     }),
   }),
 }));
@@ -144,21 +143,21 @@ const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   "& .MuiDrawer-paper": {
-    position: "relative",
+    position: "absolute",
     whiteSpace: "nowrap",
     width: drawerWidth,
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
+      duration: theme.transitions.duration.leavingScreen,
     }),
     boxSizing: "border-box",
     ...(!open && {
       overflowX: "hidden",
       transition: theme.transitions.create("width", {
         easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
+        duration: theme.transitions.duration.enteringScreen,
       }),
-      width: theme.spacing(7),
+      width: theme.spacing(9),
       [theme.breakpoints.up("sm")]: {
         width: theme.spacing(9),
       },
@@ -166,15 +165,12 @@ const Drawer = styled(MuiDrawer, {
   },
 }));
 
-const mdTheme = createTheme();
-
 export default function Layout(props) {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const accessToken = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
   const prefersDarkMode = useMediaQuery("(prefers-color-scheme: dark)");
   const [open, setOpen] = React.useState(false);
-
   const isAuth = isAuthenticated && accessToken;
 
   const theme = React.useMemo(
@@ -183,8 +179,8 @@ export default function Layout(props) {
         palette: {
           mode: prefersDarkMode ? "dark" : "light",
           secondary: {
-            main: "#121212"
-          }
+            main: "#121212",
+          },
         },
         breakpoints: {
           values: {
@@ -232,7 +228,7 @@ export default function Layout(props) {
               noWrap
               sx={{ flexGrow: 1 }}
             >
-              Dashboard
+              Firebase Redux Auth App
             </Typography>
             <MainNavigation />
           </Toolbar>
@@ -247,25 +243,24 @@ export default function Layout(props) {
                 px: [1],
               }}
             >
-              <IconButton onClick={toggleDrawer}>
-                <ChevronLeftIcon />
-              </IconButton>
+              {open && (
+                <IconButton onClick={toggleDrawer}>
+                  <ChevronLeftIcon />
+                </IconButton>
+              )}
             </Toolbar>
             <Divider />
             <List component="nav">
-              <MainListItems />
+              <MainListItems open={open} />
               <Divider sx={{ my: 1 }} />
-              {user.isAdmin && <AdminListItems />}
+              {user.isAdmin && <AdminListItems open={open} />}
             </List>
           </Drawer>
         )}
         <Box
           component="main"
           sx={{
-            backgroundColor: (theme) =>
-              theme.palette.mode === "light"
-                ? theme.palette.grey[100]
-                : theme.palette.grey[900],
+            ml: 9,
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",

@@ -22,9 +22,9 @@ import AssignmentIndIcon from "@mui/icons-material/AssignmentInd";
 import TuneIcon from "@mui/icons-material/Tune";
 
 const styles = {
-  mainItem: { fontSize: 30 },
+  icon: { fontSize: 40 },
   collapsedItems: {
-    paddingLeft: (theme) => theme.spacing(2),
+    paddingLeft: (theme) => theme.spacing(1),
   },
 };
 
@@ -32,12 +32,12 @@ const generalNavigationItems = [
   {
     text: "Dashboard",
     url: "/",
-    icon: <DashboardIcon sx={styles.mainItem} />,
+    icon: <DashboardIcon sx={styles.icon} />,
   },
   {
     text: "Validation",
     url: "/validation",
-    icon: <FingerprintIcon sx={styles.mainItem} />,
+    icon: <FingerprintIcon sx={styles.icon} />,
   },
 ];
 
@@ -119,10 +119,11 @@ export const MainListItems = (props) => {
       ))}
       <ListItemButton onClick={reportsCollapseHandler}>
         <ListItemIcon>
-          <AssignmentIcon sx={styles.mainItem} />
+          <AssignmentIcon sx={styles.icon} />
         </ListItemIcon>
         <ListItemText primary="Guests" />
-        {!openReportCollapse ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+        {props.open &&
+          (!openReportCollapse ? <ExpandMoreIcon /> : <ExpandLessIcon />)}
       </ListItemButton>
       <Collapse
         sx={styles.collapsedItems}
@@ -159,12 +160,18 @@ export const AdminListItems = (props) => {
     <>
       <ListItemButton onClick={adminCollapseHandler}>
         <ListItemIcon>
-          <AssignmentIndIcon fontSize="large" />
+          <AssignmentIndIcon sx={styles.icon} />
         </ListItemIcon>
         <ListItemText primary="Admin Tools" />
-        {!openAdminCollapse ? <ExpandMoreIcon /> : <ExpandLessIcon />}
+        {props.open &&
+          (!openAdminCollapse ? <ExpandMoreIcon /> : <ExpandLessIcon />)}
       </ListItemButton>
-      <Collapse sx={styles.collapsedItems} in={openAdminCollapse} timeout="auto" unmountOnExit>
+      <Collapse
+        sx={styles.collapsedItems}
+        in={openAdminCollapse}
+        timeout="auto"
+        unmountOnExit
+      >
         {adminNavigationItems.map((item) => {
           if (user.accessLevel < item.accessLevel) {
             return;
