@@ -76,7 +76,6 @@ function DailyEntryChart(props) {
               }}
             />
             <Bar
-              isAnimationActive={false}
               yAxisId="left"
               dataKey="value"
               barSize={20}
@@ -84,8 +83,6 @@ function DailyEntryChart(props) {
               name="Amount of entries"
             />
             <Line
-              isAnimationActive={false}
-
               yAxisId="right"
               type="linear"
               strokeWidth={3}

@@ -45,7 +45,6 @@ const DestinationChart = (props) => {
           <Pie
             label
             dataKey="value"
-            isAnimationActive={false}
             data={data}
             outerRadius={60}
             stroke="none"
