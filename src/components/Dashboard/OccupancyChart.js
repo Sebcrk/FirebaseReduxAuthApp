@@ -50,7 +50,7 @@ function OccupancyChart(props) {
           data={data}
         >
           <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-          <RadialBar background dataKey="value" />
+          <RadialBar isAnimationActive={false} background dataKey="value" />
           <text
               x={"50%"}
               y={props.size / 2}

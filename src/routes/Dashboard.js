@@ -76,7 +76,7 @@ export default function Dashboard() {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <Box component="div" sx={{ p: 2, pl: 8, flexGrow: 1, overflow: "auto" }}>
+      <Box component="div" sx={{ p: 2, flexGrow: 1, overflow: "auto" }}>
         {loading && <LinearProgress />}
         {!loading && (
           <Grid  container spacing={2}>

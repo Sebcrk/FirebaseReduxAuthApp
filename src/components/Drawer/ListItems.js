@@ -109,7 +109,7 @@ export const MainListItems = (props) => {
       {generalNavigationItems.map((item) => (
         <ListItemButton
           key={item.text}
-          onClick={props.onToggleDrawer(false)}
+          // onClick={props.onToggleDrawer(false)}
           component={Link}
           to={item.url}
         >
@@ -134,7 +134,7 @@ export const MainListItems = (props) => {
           return (
             <ListItemButton
               key={item.text}
-              onClick={props.onToggleDrawer(false)}
+              // onClick={props.onToggleDrawer(false)}
               component={Link}
               to={item.url}
             >
@@ -172,7 +172,7 @@ export const AdminListItems = (props) => {
           return (
             <ListItemButton
               key={item.text}
-              onClick={props.onToggleDrawer(false)}
+              // onClick={props.onToggleDrawer(false)}
               component={Link}
               to={item.url}
             >

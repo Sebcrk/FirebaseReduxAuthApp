@@ -10,11 +10,9 @@ import {
   XAxis,
   YAxis,
   ResponsiveContainer,
-  Legend
+  Legend,
 } from "recharts";
 import getHours from "date-fns/getHours";
-
-
 
 function DailyEntryChart(props) {
   const [data, setData] = React.useState([]);
@@ -57,7 +55,7 @@ function DailyEntryChart(props) {
 
   return (
     <>
-      <CardMedia sx={{mt: 2}}>
+      <CardMedia sx={{ mt: 2 }}>
         <ResponsiveContainer width="100%" height={props.size}>
           <ComposedChart
             data={data}
@@ -69,15 +67,25 @@ function DailyEntryChart(props) {
             <XAxis dataKey="time" stroke="#90a4ae" />
             <YAxis yAxisId="right" orientation="right" stroke="#0088FE" />
             <YAxis yAxisId="left" stroke="#4caf50" />
-            <Tooltip wrapperStyle={{outline: "none"}} contentStyle={{color: "white", backgroundColor: "#424242", borderRadius: "10px"}}/>
+            <Tooltip
+              wrapperStyle={{ outline: "none" }}
+              contentStyle={{
+                color: "white",
+                backgroundColor: "#424242",
+                borderRadius: "10px",
+              }}
+            />
             <Bar
+              isAnimationActive={false}
               yAxisId="left"
               dataKey="value"
               barSize={20}
               fill="#4caf50"
-              name="Amount of entries"              
+              name="Amount of entries"
             />
             <Line
+              isAnimationActive={false}
+
               yAxisId="right"
               type="linear"
               strokeWidth={3}
@@ -85,7 +93,7 @@ function DailyEntryChart(props) {
               stroke="#0088FE"
               name="Accumulated amount"
             />
-            <Legend/>
+            <Legend />
           </ComposedChart>
         </ResponsiveContainer>
       </CardMedia>
