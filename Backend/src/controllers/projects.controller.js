@@ -4,7 +4,11 @@ import { Task } from "../models/Task.js";
 export const getFirstProject = async (req, res) => {
   try {
     const projects = await Project.findAll();
-    res.json(projects[0]);
+    if (projects.length === 0) {
+      return res.sendStatus(205)
+    } else {
+      res.json(projects[0]);
+    }
     res.send("Getting projects...");
   } catch (error) {
     return res.status(500).json({ message: error.message });
