@@ -1,15 +1,18 @@
-import express from "express"
-import projectRoutes from "./routes/projects.routes.js"
-import taskRoutes from "./routes/tasks.routes.js"
+import express from "express";
+import projectRoutes from "./routes/projects.routes.js";
+import taskRoutes from "./routes/tasks.routes.js";
 
-const app = express ()
+const app = express();
 
 //middlewares
-app.use(express.json())
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  next()
+});
+app.use(express.json());
 
-
-
-
-app.use(projectRoutes)
-app.use(taskRoutes)
-export default app
+app.use(projectRoutes);
+app.use(taskRoutes);
+export default app;

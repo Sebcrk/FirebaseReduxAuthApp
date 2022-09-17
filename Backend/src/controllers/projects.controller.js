@@ -1,27 +1,24 @@
 import { Project } from "../models/Project.js";
 import { Task } from "../models/Task.js";
 
-export const getProjects = async (req, res) => {
+export const getFirstProject = async (req, res) => {
   try {
     const projects = await Project.findAll();
-    res.json(projects);
+    res.json(projects[0]);
     res.send("Getting projects...");
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-
-export const getProject = async (req, res) => {
-  try {       
-    const {id} = req.params
-    const project = await Project.findOne({
-        where: {
-            id
-        }
+export const deleteProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+    await Project.destroy({
+      where: { id },
     });
-    if (!project) return res.status(404).json({message: "Project does not exist."})
-    res.json(project);
+    res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
@@ -29,11 +26,23 @@ export const getProject = async (req, res) => {
 
 export const createProject = async (req, res) => {
   try {
-    const { name, priority, description } = req.body;
+    const {
+      id,
+      firstName,
+      lastName,
+      role,
+      destination,
+      entrance,
+      dateOfBirth,
+    } = req.body;
     const newProject = await Project.create({
-      name,
-      priority,
-      description,
+      id,
+      firstName,
+      lastName,
+      role,
+      destination,
+      entrance,
+      dateOfBirth,
     });
     res.json(newProject);
     res.send("Creating projects...");
@@ -42,16 +51,32 @@ export const createProject = async (req, res) => {
   }
 };
 
+export const getProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const project = await Project.findOne({
+      where: {
+        id,
+      },
+    });
+    if (!project)
+      return res.status(404).json({ message: "Project does not exist." });
+    res.json(project);
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
 export const updateProject = async (req, res) => {
   try {
-    const {id} = req.params
-    const {name, priority, description} = req.body
+    const { id } = req.params;
+    const { name, priority, description } = req.body;
 
     // Gets single record that matches id = req.params.id
     const project = await Project.findByPk(id);
 
     // Change everyone that has id = req.params.id
-    await project.update({name, priority, description})
+    await project.update({ name, priority, description });
 
     // Change all records that match id = req.params.id
     // await Project.update({name, priority, description}, {
@@ -61,32 +86,17 @@ export const updateProject = async (req, res) => {
     // });
     console.log(project);
 
-
     res.send("Updating project...");
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-export const deleteProject = async (req, res) => {
-  try {
-    const {id} = req.params
-    console.log(id);
-    await Project.destroy({
-        where: {id}
-    });
-    res.sendStatus(204)
-  } catch (error) {
-    return res.status(500).json({ message: error.message });
-  }
-};
-
-
 export const getProjectTasks = async (req, res) => {
-  try {       
-    const {id} = req.params
+  try {
+    const { id } = req.params;
     const tasks = await Task.findAll({
-      where: {projectId: id}
+      where: { projectId: id },
     });
 
     // if (!project) return res.status(404).json({message: "Project does not exist."})
@@ -94,4 +104,4 @@ export const getProjectTasks = async (req, res) => {
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
-}
+};
