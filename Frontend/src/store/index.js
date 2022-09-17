@@ -12,7 +12,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import authReducer from "./auth-slice";
 import counterReducer from "./counter-slice";
-
+import guestInfoReducer from "./guestInfo-slice"
 const persistConfig = {
   key: "auth",
   version: 1,
@@ -25,6 +25,7 @@ const store = configureStore({
   reducer: {
     counter: counterReducer,
     auth: persistedAuthReducer,
+    guestInfo: guestInfoReducer
   },
   extraReducers: (builder) => {
     builder.addCase(PURGE, (state) => {

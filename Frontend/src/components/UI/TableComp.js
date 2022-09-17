@@ -1,12 +1,38 @@
 import * as React from "react";
+import { useSelector } from "react-redux";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-// import { formatDistanceToNowStrict } from "date-fns";
+
+
+
+
+
+export default function TableComp(props) {
+  const guestData = useSelector((state) => state.guestInfo.guests);
+  const limitedGuestData = guestData.slice(0, 8)
+  const { type, dataInfo, dashboardTable } = props;
+  return (
+    <TableContainer sx={{ mt: 2 }}>
+      <Table sx={{ minWidth: 650 }} size="small" aria-label="Search table">
+        <TableHead>
+          <TableRow>
+            {type === "SearchUser" && <SearchUserTitleComp />}
+            {type === "SearchGuest" && <SearchGuestTitleComp />}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {type === "SearchUser" && <SearchUserData dataInfo={dataInfo} />}
+          {type === "SearchGuest" && <SearchGuestData isDashboard={dashboardTable} dataInfo={dataInfo ? dataInfo : limitedGuestData} />}
+        </TableBody>
+      </Table>
+    </TableContainer>
+  );
+}
+
 
 // Separate the components and organize it in a folder
 const searchUserTitles = [
@@ -67,7 +93,7 @@ const SearchGuestTitleComp = () => {
   ));
 };
 
-const SearchGuestData = ({ dataInfo }) => {
+const SearchGuestData = ({ dataInfo, isDashboard }) => {
   return dataInfo.map((data, index) => (
     <TableRow key={index}>
       <TableCell align="center">
@@ -77,32 +103,14 @@ const SearchGuestData = ({ dataInfo }) => {
       <TableCell align="center">{data.role}</TableCell>
       <TableCell align="center">{data.entrance}</TableCell>
       <TableCell align="center">
-        {data.dateOfEntry
+        {isDashboard ? new Date (data.dateOfEntry).toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })
+        : 
+        data.dateOfEntry
           .toDate()
           .toLocaleString("en-US", { dateStyle: "long", timeStyle: "short" })}
-        {/* {formatDistanceToNowStrict(data.dateOfEntry.toDate(), { addSuffix: true })} */}
-      </TableCell>
+       </TableCell>
       <TableCell align="center">{data.destination}</TableCell>
     </TableRow>
   ));
 };
 
-export default function TableComp(props) {
-  const { type, dataInfo } = props;
-  return (
-    <TableContainer sx={{ mt: 2 }}>
-      <Table sx={{ minWidth: 650 }} size="small" aria-label="Search table">
-        <TableHead>
-          <TableRow>
-            {type === "SearchUser" && <SearchUserTitleComp />}
-            {type === "SearchGuest" && <SearchGuestTitleComp />}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {type === "SearchUser" && <SearchUserData dataInfo={dataInfo} />}
-          {type === "SearchGuest" && <SearchGuestData dataInfo={dataInfo} />}
-        </TableBody>
-      </Table>
-    </TableContainer>
-  );
-}

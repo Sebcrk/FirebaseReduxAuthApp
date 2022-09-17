@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -15,16 +16,18 @@ import {
 import getHours from "date-fns/getHours";
 
 function DailyEntryChart(props) {
+  const guestData = useSelector((state) => state.guestInfo.guests);
+
   const [data, setData] = React.useState([]);
 
   useEffect(() => {
-    if (props.dataInfo.length === 0) {
+    if (guestData.length === 0) {
       setData([{ time: "No entries today", value: "0", value1: "0" }]);
     } else {
       const hourGroup = [];
-      props.dataInfo.forEach((entry) => {
+      guestData.forEach((entry) => {
         // Get only the hour of the entries
-        hourGroup.push(getHours(entry.dateOfEntry.toDate()));
+        hourGroup.push(getHours(new Date(entry.dateOfEntry)));
       });
 
       // Group by hour
@@ -51,7 +54,7 @@ function DailyEntryChart(props) {
       });
       setData(dataArray);
     }
-  }, [props.dataInfo]);
+  }, [guestData]);
 
   return (
     <>
@@ -96,7 +99,7 @@ function DailyEntryChart(props) {
       </CardMedia>
       <CardContent>
         <Typography variant="h5" component="h2">
-          Daily entry
+          Daily entries
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
           Daily entries grouped by hour of entry

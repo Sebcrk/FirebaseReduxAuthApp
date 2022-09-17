@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -9,14 +10,15 @@ const destinations = ["AUDITORIUM", "THEATER", "LIBRARY", "COLISEUM"];
 const COLORS = ["#0088FE", "#4caf50", "#ffc107", "#f57c00"];
 
 const DestinationChart = (props) => {
+  const guestData = useSelector((state) => state.guestInfo.guests);
   const [data, setData] = React.useState([]);
 
   useEffect(() => {
-    if (props.dataInfo.length === 0) {
+    if (guestData.length === 0) {
       return;
     } else {
       const roleGroup = [];
-      props.dataInfo.forEach((entry) => {
+      guestData.forEach((entry) => {
         // Get only the role of the guests
         roleGroup.push(entry.destination);
       });
@@ -35,7 +37,7 @@ const DestinationChart = (props) => {
       });
       setData(dataArray);
     }
-  }, [props.dataInfo]);
+  }, [guestData]);
 
   return (
     <>

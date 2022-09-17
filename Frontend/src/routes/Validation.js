@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
@@ -22,6 +23,9 @@ const baseData = {
 };
 
 function Validation() {
+  const occupancy = useSelector((state) => state.guestInfo.occupancy);
+  const maxOccupancy = useSelector((state) => state.guestInfo.maxOccupancy);
+
   const [isAutomatic, setIsAutomatic] = useState(false);
   const [isManual, setIsManual] = useState(false);
   const [data, setData] = useState();
@@ -31,17 +35,13 @@ function Validation() {
     severity: "",
   });
 
-  // const getData = async () => {
-   
-  //   setIsLoading(false);
-  // };
   const AutoValidationHandler = async () => {
     const res = await fetch("http://localhost:3001/projects");
     const resData = await res.json();
     console.log(resData);
     setData(resData);
-    setIsAutomatic(true)
-  }
+    setIsAutomatic(true);
+  };
 
   const snackBarCloseHandler = (event, reason) => {
     if (reason === "clickaway") {
@@ -61,70 +61,86 @@ function Validation() {
       {!isAutomatic && !isManual && (
         <Box component="div" sx={{ p: 2, flexGrow: 1, overflow: "auto" }}>
           <Grid container spacing={4} rowSpacing={4}>
-            <Grid xs={12} sm={12} md={6} lg={6}>
-              <Card
-                elevation={5}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: 320,
-                }}
-              >
-                <CardActionArea onClick={AutoValidationHandler}>
-                  <CardMedia sx={{ height: "70%" }}>
-                    <CachedIcon
+            {occupancy >= maxOccupancy && (
+              <Typography fontSize={50} align="center">
+                MAXIMUM OCCUPANCY REACHED. NO MORE PEOPLE ALLOWED.
+              </Typography>
+            )}
+            {occupancy <
+              maxOccupancy && (
+                <>
+                  <Grid xs={12} sm={12} md={6} lg={6}>
+                    <Card
+                      elevation={5}
                       sx={{
-                        height: 250,
-                        width: "100%",
-                        color: "primary.light",
+                        display: "flex",
+                        flexDirection: "column",
+                        height: 320,
                       }}
-                    />
-                  </CardMedia>
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="div"
-                      align="center"
                     >
-                      Get latest access
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
-            <Grid xs={12} sm={12} md={6} lg={6}>
-              <Card
-                elevation={5}
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  height: 320,
-                }}
-              >
-                <CardActionArea onClick={() => setIsManual(true)}>
-                  <CardMedia sx={{ height: "70%" }}>
-                    <KeyboardIcon
-                      sx={{ height: 250, width: "100%", color: "primary.dark" }}
-                    />
-                  </CardMedia>
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h5"
-                      component="div"
-                      align="center"
+                      <CardActionArea onClick={AutoValidationHandler}>
+                        <CardMedia sx={{ height: "70%" }}>
+                          <CachedIcon
+                            sx={{
+                              height: 250,
+                              width: "100%",
+                              color: "primary.light",
+                            }}
+                          />
+                        </CardMedia>
+                        <CardContent>
+                          <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="div"
+                            align="center"
+                          >
+                            Get latest access
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                  <Grid xs={12} sm={12} md={6} lg={6}>
+                    <Card
+                      elevation={5}
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        height: 320,
+                      }}
                     >
-                      Manual access
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            </Grid>
+                      <CardActionArea onClick={() => setIsManual(true)}>
+                        <CardMedia sx={{ height: "70%" }}>
+                          <KeyboardIcon
+                            sx={{
+                              height: 250,
+                              width: "100%",
+                              color: "primary.dark",
+                            }}
+                          />
+                        </CardMedia>
+                        <CardContent>
+                          <Typography
+                            gutterBottom
+                            variant="h5"
+                            component="div"
+                            align="center"
+                          >
+                            Manual access
+                          </Typography>
+                        </CardContent>
+                      </CardActionArea>
+                    </Card>
+                  </Grid>
+                </>
+              )}
           </Grid>
         </Box>
       )}
-      {isAutomatic && <AutoValidation data={data} setIsAutomatic={setIsAutomatic} />}
+      {isAutomatic && (
+        <AutoValidation data={data} setIsAutomatic={setIsAutomatic} />
+      )}
       {isManual && <ManualValidation />}
       <Snackbar
         open={snackBar.open}
