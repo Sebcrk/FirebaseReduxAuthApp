@@ -195,8 +195,8 @@ export default function Layout(props) {
     [prefersDarkMode]
   );
 
-  const toggleDrawer = () => {
-    setOpen(!open);
+  const toggleDrawer = (value) => {
+    setOpen(value);
   };
 
   return (
@@ -213,13 +213,14 @@ export default function Layout(props) {
               edge="start"
               color="inherit"
               aria-label="open drawer"
-              onClick={toggleDrawer}
+              onClick={() => toggleDrawer(true)}
               sx={{
-                marginRight: "36px",
+                marginRight: "25px",
                 ...(open && { display: "none" }),
               }}
             >
-              <MenuIcon />
+              <MenuIcon 
+              fontSize="large"/>
             </IconButton>
             <Typography
               component="h1"
@@ -244,16 +245,16 @@ export default function Layout(props) {
               }}
             >
               {open && (
-                <IconButton onClick={toggleDrawer}>
+                <IconButton onClick={() => toggleDrawer(false)}>
                   <ChevronLeftIcon />
                 </IconButton>
               )}
             </Toolbar>
             <Divider />
             <List component="nav">
-              <MainListItems open={open} />
+              <MainListItems open={open} onToggleDrawer={toggleDrawer}/>
               <Divider sx={{ my: 1 }} />
-              {user.isAdmin && <AdminListItems open={open} />}
+              {user.isAdmin && <AdminListItems onToggleDrawer={toggleDrawer} open={open} />}
             </List>
           </Drawer>
         )}
