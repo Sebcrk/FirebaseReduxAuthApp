@@ -1,39 +1,44 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-
+import { db } from "../../firebase";
+import { collection, addDoc } from "firebase/firestore";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Box } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
-import TextField from "@mui/material/TextField";
 
-import LoadingButtonComp from "../UI/LoadingButtonComp";
-import InputText from "../UI/InputText";
+import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
+import InputText from "../../components/UI/InputText";
 
-function AutoValidation({ setIsAutomatic, data }) {
-  const [isLoading, setIsLoading] = useState(true);
+function AutoValidation({ setIsAutomatic, data, setSnackBar }) {
+  const [isLoading, setIsLoading] = useState(false);
 
   const { handleSubmit, control } = useForm();
 
-  useEffect(() => {
-    if (data) {
-      setIsLoading(false);
-    }
-  }, [data]);
 
   const accessRequestHandler = async (data, event) => {
     event.preventDefault();
+    setIsLoading(true)
     try {
-      console.log(data);
-      //... Check if access is approved
+      const finalData = {
+        firstName: data.first_name,
+        lastName: data.last_name,
+        dateOfBirth: new Date(data.date_of_birth),
+        id: data.id,
+        entrance: data.entrance,
+        role: data.role,
+        destination: data.destination,
+        dateOfEntry: new Date(),
+      };
+      console.log(finalData);
 
-      // If access is approved
-
-      //If access is NOT approved
+      const docRef = await addDoc(collection(db, "guests"), finalData);
+      console.log("Guest entry created with ID:", docRef.id);
       // Delete from virtual queue
-      //   const res = await fetch(`http://localhost:3001/projects/${data.id}`, {
-      //     method: "DELETE",
-      //   });
-      //   console.log(res.status);
+      const res = await fetch(`http://localhost:3001/projects/${data.id}`, {
+        method: "DELETE",
+      });
+      setSnackBar({open: true, severity: "success", message: "Access granted"})
+      setIsLoading(false)
       setIsAutomatic(false);
     } catch (error) {
       console.log(error.message);
@@ -41,7 +46,11 @@ function AutoValidation({ setIsAutomatic, data }) {
   };
   return (
     <>
-      <Box component="form" onSubmit={handleSubmit(accessRequestHandler)}>
+      <Box
+        sx={{ mt: 4 }}
+        component="form"
+        onSubmit={handleSubmit(accessRequestHandler)}
+      >
         {isLoading && <CircularProgress />}
         {!isLoading && (
           <Grid
@@ -51,7 +60,7 @@ function AutoValidation({ setIsAutomatic, data }) {
             spacing={4}
             rowSpacing={0.1}
           >
-            <Grid xs={12} sm={12} md={6} lg={6}>
+            <Grid xs={12} sm={12} md={6} lg={4}>
               <InputText
                 required
                 fullWidth
@@ -61,7 +70,7 @@ function AutoValidation({ setIsAutomatic, data }) {
                 defaultValue={data.firstName}
               />
             </Grid>
-            <Grid xs={12} sm={12} md={6} lg={6}>
+            <Grid xs={12} sm={12} md={6} lg={4}>
               <InputText
                 required
                 fullWidth
@@ -71,7 +80,7 @@ function AutoValidation({ setIsAutomatic, data }) {
                 defaultValue={data.lastName}
               />
             </Grid>
-            <Grid xs={12} sm={12} md={6} lg={6}>
+            <Grid xs={12} sm={12} md={6} lg={4}>
               <InputText
                 required
                 fullWidth
@@ -81,8 +90,8 @@ function AutoValidation({ setIsAutomatic, data }) {
                 defaultValue={data.id}
               />
             </Grid>
-            <Grid xs={12} sm={12} md={6} lg={6}>
-            <InputText
+            <Grid xs={12} sm={12} md={6} lg={4}>
+              <InputText
                 required
                 fullWidth
                 control={control}
@@ -92,7 +101,7 @@ function AutoValidation({ setIsAutomatic, data }) {
               />
             </Grid>
             <Grid xs={12} sm={12} md={4} lg={4}>
-            <InputText
+              <InputText
                 required
                 fullWidth
                 control={control}
@@ -102,7 +111,7 @@ function AutoValidation({ setIsAutomatic, data }) {
               />
             </Grid>
             <Grid xs={12} sm={12} md={4} lg={4}>
-            <InputText
+              <InputText
                 required
                 fullWidth
                 control={control}
@@ -112,7 +121,7 @@ function AutoValidation({ setIsAutomatic, data }) {
               />
             </Grid>
             <Grid xs={12} sm={12} md={4} lg={4}>
-            <InputText
+              <InputText
                 required
                 fullWidth
                 control={control}

@@ -1,16 +1,5 @@
 import { useEffect, useState } from "react";
-import { db } from "../firebase";
-import {
-  collection,
-  query,
-  orderBy,
-  limit,
-  onSnapshot,
-  where,
-} from "firebase/firestore";
-import {totalOccupancy } from "../store/guestInfo-slice"
-import { useDispatch, useSelector } from "react-redux";
-import { startOfDay, endOfDay } from "date-fns";
+import { useSelector } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Unstable_Grid2";
@@ -33,20 +22,15 @@ const dashboardItems = [
 
 export default function Dashboard() {
   const guestData = useSelector((state) => state.guestInfo.guests);
-  const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(true);
-  const dispatch = useDispatch()
 
-  const today = new Date();
-  const start = startOfDay(today);
-  const end = endOfDay(today);
   const itemsSize = 240;
 
   useEffect(() => {
     let isSubscribed = true;
 
-    if (guestData.length > 0 ) {
-      setLoading(false)
+    if (guestData.length > 0) {
+      setLoading(false);
     }
     return () => {
       isSubscribed = false;
