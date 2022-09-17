@@ -9,7 +9,7 @@ function InputText(props) {
     <Controller
       name={finalName.toLowerCase()}
       control={control}
-      defaultValue=""
+      defaultValue={props.defaultValue}
       render={({ field }) => (
         <TextField
           {...field}

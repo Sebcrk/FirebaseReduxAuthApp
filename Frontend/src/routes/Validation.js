@@ -22,16 +22,26 @@ const baseData = {
 };
 
 function Validation() {
-  const [isLoading, setIsloading] = useState(false);
   const [isAutomatic, setIsAutomatic] = useState(false);
   const [isManual, setIsManual] = useState(false);
+  const [data, setData] = useState();
   const [snackBar, setSnackBar] = useState({
     open: false,
     message: "",
     severity: "",
   });
 
-
+  // const getData = async () => {
+   
+  //   setIsLoading(false);
+  // };
+  const AutoValidationHandler = async () => {
+    const res = await fetch("http://localhost:3001/projects");
+    const resData = await res.json();
+    console.log(resData);
+    setData(resData);
+    setIsAutomatic(true)
+  }
 
   const snackBarCloseHandler = (event, reason) => {
     if (reason === "clickaway") {
@@ -46,10 +56,11 @@ function Validation() {
       Icon={baseData.Icon}
       title={baseData.title}
       subtitle={baseData.subtitle}
+      maxWidth="sm"
     >
       {!isAutomatic && !isManual && (
         <Box component="div" sx={{ p: 2, flexGrow: 1, overflow: "auto" }}>
-          <Grid container spacing={4} rowSpacing={1}>
+          <Grid container spacing={4} rowSpacing={4}>
             <Grid xs={12} sm={12} md={6} lg={6}>
               <Card
                 elevation={5}
@@ -59,7 +70,7 @@ function Validation() {
                   height: 320,
                 }}
               >
-                <CardActionArea onClick={() => setIsAutomatic(true)}>
+                <CardActionArea onClick={AutoValidationHandler}>
                   <CardMedia sx={{ height: "70%" }}>
                     <CachedIcon
                       sx={{
@@ -113,7 +124,7 @@ function Validation() {
           </Grid>
         </Box>
       )}
-      {isAutomatic && <AutoValidation setIsAutomatic={setIsAutomatic} />}
+      {isAutomatic && <AutoValidation data={data} setIsAutomatic={setIsAutomatic} />}
       {isManual && <ManualValidation />}
       <Snackbar
         open={snackBar.open}
