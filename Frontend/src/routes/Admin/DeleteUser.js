@@ -4,7 +4,8 @@ import { functions } from "../../firebase";
 import { httpsCallable } from "firebase/functions";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import PersonRemoveIcon from '@mui/icons-material/PersonRemove';import Snackbar from "@mui/material/Snackbar";
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import Snackbar from "@mui/material/Snackbar";
 
 import AlertComponent from "../../components/UI/AlertComponent";
 import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
