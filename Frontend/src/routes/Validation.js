@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Box, CardActionArea, Button } from "@mui/material";
+import { Box, CardActionArea } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Snackbar from "@mui/material/Snackbar";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
@@ -34,7 +34,6 @@ function Validation() {
     message: "",
     severity: "",
   });
-
   const AutoValidationHandler = async () => {
     try {
       const res = await fetch("http://localhost:3001/projects");
@@ -44,11 +43,17 @@ function Validation() {
           message: "Virtual queue is empty",
           severity: "info",
         });
+      } else {
+        const resData = await res.json();
+        setData(resData);
+        setIsAutomatic(true);
       }
-      const resData = await res.json();
-      setData(resData);
-      setIsAutomatic(true);
     } catch (error) {
+      setSnackBar({
+        open: true,
+        message: error.message,
+        severity: "error",
+      });
       console.log(error.message);
     }
   };
@@ -68,89 +73,89 @@ function Validation() {
       subtitle={baseData.subtitle}
       maxWidth="sm"
     >
-      {!isAutomatic && !isManual && (
+      {occupancy >= maxOccupancy && (
+        <Typography fontSize={50} align="center">
+          MAXIMUM OCCUPANCY REACHED. NO MORE PEOPLE ALLOWED.
+        </Typography>
+      )}
+      {occupancy < maxOccupancy && !isAutomatic && !isManual && (
         <Box component="div" sx={{ p: 2, flexGrow: 1, overflow: "auto" }}>
           <Grid sx={{ mt: 2 }} container spacing={4} rowSpacing={4}>
-            {occupancy >= maxOccupancy && (
-              <Typography fontSize={50} align="center">
-                MAXIMUM OCCUPANCY REACHED. NO MORE PEOPLE ALLOWED.
-              </Typography>
-            )}
-            {occupancy < maxOccupancy && (
-              <>
-                <Grid xs={12} sm={12} md={6} lg={6}>
-                  <Card
-                    elevation={5}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      height: 320,
-                    }}
-                  >
-                    <CardActionArea onClick={AutoValidationHandler}>
-                      <CardMedia sx={{ height: "70%" }}>
-                        <CachedIcon
-                          sx={{
-                            height: 250,
-                            width: "100%",
-                            color: "primary.light",
-                          }}
-                        />
-                      </CardMedia>
-                      <CardContent>
-                        <Typography
-                          gutterBottom
-                          variant="h5"
-                          component="div"
-                          align="center"
-                        >
-                          Get latest access
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-                <Grid xs={12} sm={12} md={6} lg={6}>
-                  <Card
-                    elevation={5}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      height: 320,
-                    }}
-                  >
-                    <CardActionArea onClick={() => setIsManual(true)}>
-                      <CardMedia sx={{ height: "70%" }}>
-                        <KeyboardIcon
-                          sx={{
-                            height: 250,
-                            width: "100%",
-                            color: "primary.dark",
-                          }}
-                        />
-                      </CardMedia>
-                      <CardContent>
-                        <Typography
-                          gutterBottom
-                          variant="h5"
-                          component="div"
-                          align="center"
-                        >
-                          Manual access
-                        </Typography>
-                      </CardContent>
-                    </CardActionArea>
-                  </Card>
-                </Grid>
-              </>
-            )}
+            <Grid xs={12} sm={12} md={6} lg={6}>
+              <Card
+                elevation={5}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: 320,
+                }}
+              >
+                <CardActionArea onClick={AutoValidationHandler}>
+                  <CardMedia sx={{ height: "70%" }}>
+                    <CachedIcon
+                      sx={{
+                        height: 250,
+                        width: "100%",
+                        color: "primary.light",
+                      }}
+                    />
+                  </CardMedia>
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      align="center"
+                    >
+                      Get latest access
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
+            <Grid xs={12} sm={12} md={6} lg={6}>
+              <Card
+                elevation={5}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: 320,
+                }}
+              >
+                <CardActionArea onClick={() => setIsManual(true)}>
+                  <CardMedia sx={{ height: "70%" }}>
+                    <KeyboardIcon
+                      sx={{
+                        height: 250,
+                        width: "100%",
+                        color: "primary.dark",
+                      }}
+                    />
+                  </CardMedia>
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h5"
+                      component="div"
+                      align="center"
+                    >
+                      Manual access
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            </Grid>
           </Grid>
         </Box>
       )}
-      {isAutomatic && (
-        <AutoValidation setSnackBar={setSnackBar} data={data} setIsAutomatic={setIsAutomatic} />
+      {isAutomatic && occupancy < maxOccupancy && (
+        <AutoValidation
+          setSnackBar={setSnackBar}
+          data={data}
+          setIsAutomatic={setIsAutomatic}
+        />
       )}
-      {isManual && <ManualValidation />}
+      {isManual && occupancy < maxOccupancy && <ManualValidation />}
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={snackBar.open}

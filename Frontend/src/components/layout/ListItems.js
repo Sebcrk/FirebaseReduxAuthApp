@@ -52,11 +52,11 @@ const guestReportNavigationItems = [
     url: "/guests/schedule",
     icon: <InsertInvitationIcon />,
   },
-  {
-    text: "Tracking",
-    url: "/guests/map",
-    icon: <MapIcon />,
-  },
+  // {
+  //   text: "Tracking",
+  //   url: "/guests/map",
+  //   icon: <MapIcon />,
+  // },
   {
     text: "Reports",
     url: "/guests/reports",
@@ -77,24 +77,24 @@ const adminNavigationItems = [
     icon: <PersonAddIcon />,
     accessLevel: 2,
   },
-  {
-    text: "Edit User",
-    url: "/admin/edit",
-    icon: <TuneIcon />,
-    accessLevel: 1,
-  },
+  // {
+  //   text: "Edit User",
+  //   url: "/admin/edit",
+  //   icon: <TuneIcon />,
+  //   accessLevel: 1,
+  // },
   {
     text: "Delete User",
     url: "/admin/delete",
     icon: <PersonRemoveIcon />,
     accessLevel: 2,
   },
-  {
-    text: "Ban Guests",
-    url: "/admin/ban",
-    icon: <BlockIcon />,
-    accessLevel: 3,
-  },
+  // {
+  //   text: "Ban Guests",
+  //   url: "/admin/ban",
+  //   icon: <BlockIcon />,
+  //   accessLevel: 3,
+  // },
 ];
 
 export const MainListItems = (props) => {

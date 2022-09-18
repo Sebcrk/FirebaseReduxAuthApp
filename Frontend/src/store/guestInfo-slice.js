@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialGuestInfoState = { guests: {}, occupancy: "", maxOccupancy: 10 };
+const initialGuestInfoState = { guests: [], occupancy: "", maxOccupancy: 10 };
 const guestInfoSlice = createSlice({
   name: "guestInfo",
   initialState: initialGuestInfoState,

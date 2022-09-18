@@ -10,11 +10,12 @@ import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
 import InputText from "../../components/UI/InputText";
 
 function AutoValidation({ setIsAutomatic, data, setSnackBar }) {
-  const [isLoading, setIsLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(true);
   const { handleSubmit, control } = useForm();
 
-
+  useEffect(() => {    
+    setIsLoading(false)
+  }, [])
   const accessRequestHandler = async (data, event) => {
     event.preventDefault();
     setIsLoading(true)
@@ -29,10 +30,9 @@ function AutoValidation({ setIsAutomatic, data, setSnackBar }) {
         destination: data.destination,
         dateOfEntry: new Date(),
       };
-      console.log(finalData);
 
       const docRef = await addDoc(collection(db, "guests"), finalData);
-      console.log("Guest entry created with ID:", docRef.id);
+
       // Delete from virtual queue
       const res = await fetch(`http://localhost:3001/projects/${data.id}`, {
         method: "DELETE",

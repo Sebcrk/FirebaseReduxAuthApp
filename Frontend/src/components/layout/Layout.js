@@ -117,7 +117,7 @@ import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import MainNavigation from "./MainNavigation";
-import { MainListItems, AdminListItems } from "../Drawer/ListItems";
+import { MainListItems, AdminListItems } from "./ListItems";
 
 const drawerWidth = 210;
 

@@ -29,7 +29,7 @@ export default function Dashboard() {
   useEffect(() => {
     let isSubscribed = true;
 
-    if (guestData.length > 0) {
+    if (guestData) {
       setLoading(false);
     }
     return () => {
