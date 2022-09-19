@@ -21,6 +21,7 @@ const GuestTypeChart = (props) => {
 
   useEffect(() => {
     if (guestData.length === 0) {
+      setData([{name: "No entries today", value: 0}])
       return;
     } else {
       const roleGroup = [];

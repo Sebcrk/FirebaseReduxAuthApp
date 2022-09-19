@@ -155,7 +155,13 @@ function Validation() {
           setIsAutomatic={setIsAutomatic}
         />
       )}
-      {isManual && occupancy < maxOccupancy && <ManualValidation />}
+      {isManual && occupancy < maxOccupancy && (
+        <ManualValidation
+          setSnackBar={setSnackBar}
+          data={data}
+          setIsAutomatic={setIsAutomatic}
+        />
+      )}
       <Snackbar
         anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
         open={snackBar.open}
