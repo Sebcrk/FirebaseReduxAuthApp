@@ -60,6 +60,7 @@ export default function Dashboard() {
                       display: "flex",
                       flexDirection: "column",
                       height: 340,
+                      borderRadius: "20px"
                     }}
                   >
                     <DashboardItem

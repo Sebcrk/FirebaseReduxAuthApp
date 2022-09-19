@@ -14,6 +14,7 @@ function LoadingButtonComp(props) {
       bgcolor: `${props.color}.light`,
       "&:hover" : {bgcolor: `${props.color}.dark`},
     }}
+    {...props}
   >
     {props.children}
   </LoadingButton>

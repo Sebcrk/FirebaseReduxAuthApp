@@ -8,13 +8,12 @@ import {
   collection,
   query,
   orderBy,
-  limit,
   onSnapshot,
   where,
 } from "firebase/firestore";
-import { startOfDay, endOfDay } from "date-fns";
+import { startOfToday, endOfDay } from "date-fns";
 
-import Layout from "./components/layout/Layout";
+import Layout from "./components/Layout/Layout";
 import RoutesComp from "./Routes";
 import Snackbar from "@mui/material/Snackbar";
 
@@ -22,20 +21,17 @@ import AlertComponent from "./components/UI/AlertComponent";
 
 function App() {
   const user = useSelector((state) => state.auth.user);
-  const [guests, setGuests] = useState([]);
-  const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
-
-  const today = new Date();
-  const start = startOfDay(today);
-  const end = endOfDay(today);
-  const itemsSize = 240;
   const [snackBar, setSnackBar] = useState({
     open: false,
   });
 
+  const itemsSize = 240;
+
+  const start = startOfToday();
+  const end = endOfDay(start);
+
   useEffect(() => {
-   
     onAuthStateChanged(auth, (userData) => {
       if (userData) {
         userData.getIdTokenResult().then((idTokenResult) => {
@@ -75,37 +71,45 @@ function App() {
             // console.log("User does NOT has Admin privileges");
           }
         });
+
+
+        // guest query subscription
+        const guestsRef = collection(db, "guests");
+        const q = query(
+          guestsRef,
+          where("dateOfEntry", ">=", start),
+          where("dateOfEntry", "<=", end),
+          orderBy("dateOfEntry", "desc")
+        );
+
+        onSnapshot(
+          q,
+          (querySnapshot) => {
+            if (querySnapshot.empty) {
+              console.log("No guests have entered yet.");
+              dispatch(totalOccupancy({ currentOccupancy: 0 }));
+            } else {
+              const results = [];
+              querySnapshot.forEach((doc) => {
+                let dateOfBirth = doc.data().dateOfBirth.toDate().toString();
+                let dateOfEntry = doc.data().dateOfEntry.toDate().toString();
+                results.push({ ...doc.data(), dateOfBirth, dateOfEntry });
+              });
+              dispatch(
+                totalOccupancy({ currentOccupancy: querySnapshot.size })
+              );
+              dispatch(guestsInfo({ guests: results }));
+            }
+          },
+          (error) => {
+            console.error(error.message);
+          }
+        );
+        
       } else {
         return console.log("No user found");
       }
     });
-
-    // guest
-    const guestsRef = collection(db, "guests");
-    const q = query(
-      guestsRef,
-      where("dateOfEntry", ">=", start),
-      where("dateOfEntry", "<=", end),
-      orderBy("dateOfEntry", "desc"),
-    );
-
-    onSnapshot(q, (querySnapshot) => {
-      if (querySnapshot.empty) {
-        console.log("No guests have entered yet.");
-        dispatch(totalOccupancy({ currentOccupancy: 0 }));
-      } else {
-        const results = [];
-        querySnapshot.forEach((doc) => {
-          let dateOfBirth = doc.data().dateOfBirth.toDate().toString()
-          let dateOfEntry= doc.data().dateOfEntry.toDate().toString()
-          results.push({...doc.data(), dateOfBirth, dateOfEntry});
-        });
-        dispatch(totalOccupancy({ currentOccupancy: querySnapshot.size }));
-        dispatch(guestsInfo({ guests: results}));
-      }
-    });
-
-  
   }, []);
 
   const snackBarCloseHandler = (event, reason) => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
@@ -58,7 +58,8 @@ function Validation() {
       console.log(error.message);
     }
   };
-console.log(isAutomatic ? "Auto" : (isManual && "Manual"));
+
+
   const manualValidationHandler = async () => {
     try {
       const res = await fetch("http://localhost:3001/manualValidation");
@@ -114,6 +115,7 @@ console.log(isAutomatic ? "Auto" : (isManual && "Manual"));
                   display: "flex",
                   flexDirection: "column",
                   height: 320,
+                  borderRadius: "20px"
                 }}
               >
                 <CardActionArea onClick={autoValidationHandler}>
@@ -146,6 +148,7 @@ console.log(isAutomatic ? "Auto" : (isManual && "Manual"));
                   display: "flex",
                   flexDirection: "column",
                   height: 320,
+                  borderRadius: "20px"
                 }}
               >
                 <CardActionArea onClick={manualValidationHandler}>
