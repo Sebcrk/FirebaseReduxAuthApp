@@ -1,24 +1,24 @@
 import { Project } from "../models/Project.js";
-import { Task } from "../models/Task.js";
+import { ManualValidation } from "../models/ManualValidation.js";
 
-export const getFirstProject = async (req, res) => {
+export const getFirstPersonInQueue = async (req, res) => {
   try {
-    const projects = await Project.findAll();
-    if (projects.length === 0) {
+    const queue = await ManualValidation.findAll();
+    if (queue.length === 0) {
       return res.sendStatus(205)
     } else {
-      return res.json(projects[0]);
+      return res.json(queue[0]);
     }
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
 };
 
-export const deleteProject = async (req, res) => {
+export const deletePersonFromQueue = async (req, res) => {
   try {
     const { id } = req.params;
     console.log(id);
-    await Project.destroy({
+    await ManualValidation.destroy({
       where: { id },
     });
     res.sendStatus(204);
@@ -27,7 +27,7 @@ export const deleteProject = async (req, res) => {
   }
 };
 
-export const createProject = async (req, res) => {
+export const addPersonToQueue = async (req, res) => {
   try {
     const {
       id,
@@ -38,7 +38,7 @@ export const createProject = async (req, res) => {
       entrance,
       dateOfBirth,
     } = req.body;
-    const newProject = await Project.create({
+    const newPerson = await ManualValidation.create({
       id,
       firstName,
       lastName,
@@ -47,7 +47,7 @@ export const createProject = async (req, res) => {
       entrance,
       dateOfBirth,
     });
-    res.json(newProject);
+    res.json(newPerson);
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }

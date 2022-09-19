@@ -1,6 +1,7 @@
 import express from "express";
 import projectRoutes from "./routes/projects.routes.js";
 import taskRoutes from "./routes/tasks.routes.js";
+import manualValidationRoutes from "./routes/manualvalidation.routes.js"
 
 const app = express();
 
@@ -15,4 +16,5 @@ app.use(express.json());
 
 app.use(projectRoutes);
 app.use(taskRoutes);
+app.use(manualValidationRoutes);
 export default app;
