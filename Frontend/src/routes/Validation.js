@@ -34,7 +34,8 @@ function Validation() {
     message: "",
     severity: "",
   });
-  const AutoValidationHandler = async () => {
+
+  const autoValidationHandler = async () => {
     try {
       const res = await fetch("http://localhost:3001/projects");
       if (res.status === 205) {
@@ -47,6 +48,31 @@ function Validation() {
         const resData = await res.json();
         setData(resData);
         setIsAutomatic(true);
+      }
+    } catch (error) {
+      setSnackBar({
+        open: true,
+        message: error.message,
+        severity: "error",
+      });
+      console.log(error.message);
+    }
+  };
+console.log(isAutomatic ? "Auto" : (isManual && "Manual"));
+  const manualValidationHandler = async () => {
+    try {
+      const res = await fetch("http://localhost:3001/manualValidation");
+      if (res.status === 205) {
+        setSnackBar({
+          open: true,
+          message: "Virtual queue is empty",
+          severity: "info",
+        });
+        setIsManual(true);
+      } else {
+        const resData = await res.json();
+        setData(resData);
+        setIsManual(true);
       }
     } catch (error) {
       setSnackBar({
@@ -70,7 +96,7 @@ function Validation() {
       color={baseData.color}
       Icon={baseData.Icon}
       title={baseData.title}
-      subtitle={baseData.subtitle}
+      subtitle={isAutomatic ? "Auto" : (isManual && "Manual")}
       maxWidth="sm"
     >
       {occupancy >= maxOccupancy && (
@@ -90,7 +116,7 @@ function Validation() {
                   height: 320,
                 }}
               >
-                <CardActionArea onClick={AutoValidationHandler}>
+                <CardActionArea onClick={autoValidationHandler}>
                   <CardMedia sx={{ height: "70%" }}>
                     <CachedIcon
                       sx={{
@@ -122,7 +148,7 @@ function Validation() {
                   height: 320,
                 }}
               >
-                <CardActionArea onClick={() => setIsManual(true)}>
+                <CardActionArea onClick={manualValidationHandler}>
                   <CardMedia sx={{ height: "70%" }}>
                     <KeyboardIcon
                       sx={{
@@ -159,7 +185,7 @@ function Validation() {
         <ManualValidation
           setSnackBar={setSnackBar}
           data={data}
-          setIsAutomatic={setIsAutomatic}
+          setIsManual={setIsManual}
         />
       )}
       <Snackbar

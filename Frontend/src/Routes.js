@@ -30,7 +30,13 @@ const routesArray = [
   { url: "validation", comp: Validation, protected: true },
   { url: "guests/search", comp: SearchGuest, protected: true },
   { url: "guests/schedule", comp: Schedule, protected: true },
-  { url: "guests/reports", comp: Reports, protected: true },
+  {
+    url: "guests/reports",
+    comp: Reports,
+    protected: true,
+    admin: true,
+    accessLevel: 2,
+  },
   {
     url: "admin/search",
     comp: SearchUser,

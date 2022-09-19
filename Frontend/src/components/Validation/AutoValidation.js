@@ -38,6 +38,7 @@ function AutoValidation({ setIsAutomatic, data, setSnackBar }) {
       const res = await fetch(`http://localhost:3001/projects/${data.id}`, {
         method: "DELETE",
       });
+
       setSnackBar({
         open: true,
         severity: "success",
@@ -47,6 +48,12 @@ function AutoValidation({ setIsAutomatic, data, setSnackBar }) {
       setIsAutomatic(false);
     } catch (error) {
       console.log(error.message);
+      setSnackBar({
+        open: true,
+        severity: "error",
+        message: error.message,
+      });
+      setIsLoading(false);
     }
   };
   return (

@@ -47,11 +47,11 @@ const guestReportNavigationItems = [
     url: "/guests/search",
     icon: <SearchIcon />,
   },
-  {
-    text: "Schedule",
-    url: "/guests/schedule",
-    icon: <InsertInvitationIcon />,
-  },
+  // {
+  //   text: "Schedule",
+  //   url: "/guests/schedule",
+  //   icon: <InsertInvitationIcon />,
+  // },
   // {
   //   text: "Tracking",
   //   url: "/guests/map",
@@ -61,6 +61,7 @@ const guestReportNavigationItems = [
     text: "Reports",
     url: "/guests/reports",
     icon: <BarChartIcon />,
+    accessLevel: 2,
   },
 ];
 
@@ -98,6 +99,7 @@ const adminNavigationItems = [
 ];
 
 export const MainListItems = (props) => {
+  const user = useSelector((state) => state.auth.user);
   const [openReportCollapse, setOpenReportCollapse] = useState(false);
 
   const reportsCollapseHandler = () => {
@@ -132,6 +134,9 @@ export const MainListItems = (props) => {
         unmountOnExit
       >
         {guestReportNavigationItems.map((item) => {
+          if (user.accessLevel < item.accessLevel) {
+            return;
+          }
           return (
             <ListItemButton
               key={item.text}

@@ -10,9 +10,13 @@ import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
 import InputText from "../../components/UI/InputText";
 
 const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const { handleSubmit, control } = useForm();
 
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
+ 
   const accessRequestHandler = async (data, event) => {
     event.preventDefault();
     setIsLoading(true);
@@ -27,9 +31,14 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
         destination: data.destination,
         dateOfEntry: new Date(),
       };
-
+     
       const docRef = await addDoc(collection(db, "guests"), finalData);
 
+      // Delete from virtual queue
+      const res = await fetch(`http://localhost:3001/manualValidation/${data.id}`, {
+        method: "DELETE",
+      });
+      
       setSnackBar({
         open: true,
         severity: "success",
@@ -39,6 +48,12 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
       setIsManual(false);
     } catch (error) {
       console.log(error.message);
+      setSnackBar({
+        open: true,
+        severity: "error",
+        message: error.message,
+      });
+      setIsLoading(false);
     }
   };
   return (
@@ -61,6 +76,7 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
             control={control}
             name="First Name"
             type="text"
+            defaultValue={data && data.firstName}
           />
         </Grid>
         <Grid xs={12} sm={12} md={6} lg={4}>
@@ -70,6 +86,7 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
             control={control}
             name="Last Name"
             type="text"
+            defaultValue={data && data.lastName}
           />
         </Grid>
         <Grid xs={12} sm={12} md={6} lg={4}>
@@ -79,6 +96,7 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
             control={control}
             name="ID"
             type="number"
+            defaultValue={data && data.id}
           />
         </Grid>
         <Grid xs={12} sm={12} md={6} lg={4}>
@@ -88,6 +106,7 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
             control={control}
             name="Date of birth"
             type="date"
+            defaultValue={data && data.dateOfBirth.split("T")[0]}
           />
         </Grid>
         <Grid xs={12} sm={12} md={4} lg={4}>
@@ -97,6 +116,7 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
             control={control}
             name="Role"
             type="text"
+            defaultValue={data && data.role}
           />
         </Grid>
         <Grid xs={12} sm={12} md={4} lg={4}>
@@ -106,6 +126,7 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
             control={control}
             name="Destination"
             type="text"
+            defaultValue={data && data.destination}
           />
         </Grid>
         <Grid xs={12} sm={12} md={4} lg={4}>
@@ -115,6 +136,7 @@ const ManualValidation = ({ setIsManual, data, setSnackBar }) => {
             control={control}
             name="Entrance"
             type="number"
+            defaultValue={data && data.entrance}
           />
         </Grid>
         <LoadingButtonComp
