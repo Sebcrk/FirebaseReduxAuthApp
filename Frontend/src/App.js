@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { totalOccupancy, guestsInfo } from "./store/guestInfo-slice";
 import { onAuthStateChanged } from "firebase/auth";
 import { authActions } from "./store/auth-slice";
+import { persistor } from "./store";
 import { auth, db } from "./firebase";
 import {
   collection,
@@ -107,6 +108,8 @@ function App() {
         );
         
       } else {
+        dispatch(authActions.logout());
+        persistor.purge();
         return console.log("No user found");
       }
     });

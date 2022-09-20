@@ -7,6 +7,10 @@ import { useForm } from "react-hook-form";
 
 import Avatar from "@mui/material/Avatar";
 import LoadingButton from "@mui/lab/LoadingButton";
+import Alert from "@mui/material/Alert";
+import IconButton from "@mui/material/IconButton";
+import Collapse from "@mui/material/Collapse";
+import CloseIcon from "@mui/icons-material/Close";
 import CssBaseline from "@mui/material/CssBaseline";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -22,25 +26,24 @@ export default function SignIn() {
   const { handleSubmit, control } = useForm();
   let navigate = useNavigate();
   const [isLoading, setIsloading] = useState(false);
+  const [alert, setAlert] = React.useState({ open: false, message: "" });
 
   const loginHandler = async (data, event) => {
-   try {
-    event.preventDefault();
     setIsloading(true);
-    console.log("Signing in");
-    const loginData = await signInWithEmailAndPassword(
-      auth,
-      data.email,
-      data.password
-    );
-    console.log("Signed in: " + loginData.user.displayName);
-    navigate("/", { replace: true });
+    try {
+      event.preventDefault();
+      console.log("Attempting sign in...");
+      const loginData = await signInWithEmailAndPassword(
+        auth,
+        data.email,
+        data.password
+      );
+      console.log("Signed in: " + loginData.user.displayName);
+      navigate("/", { replace: true });
+    } catch (error) {
+      setAlert({ open: true, message: error.code });
+    }
     setIsloading(false);
-   } 
-   catch (error ) {
-    alert(error.message)
-    setIsloading(false);
-   }
   };
 
   return (
@@ -80,6 +83,25 @@ export default function SignIn() {
             fullWidth
             required
           />
+          <Collapse in={alert.open}>
+            <Alert
+              action={
+                <IconButton
+                  aria-label="alert"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setAlert(false);
+                  }}
+                >
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              severity="error"
+            >
+              {alert.message}
+            </Alert>
+          </Collapse>
           <LoadingButton
             type="submit"
             loading={isLoading}

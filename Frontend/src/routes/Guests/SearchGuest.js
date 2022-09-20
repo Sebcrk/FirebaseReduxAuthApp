@@ -69,7 +69,7 @@ function SearchGuest() {
         setResults(resultsArray);
       }
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
 

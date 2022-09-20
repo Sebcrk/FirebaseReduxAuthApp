@@ -1,137 +1,89 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-
 
 import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
-import FaceIcon from '@mui/icons-material/Face';
-import Snackbar from "@mui/material/Snackbar";
-
-import AlertComponent from "../../components/UI/AlertComponent";
+import Grid from "@mui/material/Unstable_Grid2";
+import FaceIcon from "@mui/icons-material/Face";
+import { LinearProgress, TextField } from "@mui/material";
 import TableComp from "../../components/UI/TableComp";
-import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
-import {compoundSearchDB} from "../../utils/searchDB";
-import InputText from "../../components/UI/InputText";
+import { usersSearch } from "../../utils/searchDB";
 import BasePage from "../../components/UI/Wrappers/BasePage";
-
-
 
 const baseData = {
   color: "primary",
   Icon: FaceIcon,
   title: "Search User",
-  subtitle: "Search user by ID, name or last name",
+  subtitle: "Filter users by ID, name, last name or role",
 };
 
-
 function SearchUser() {
-  const [isLoading, setIsloading] = useState(false);
-  const [results, setResults] = useState();
-  const [snackBar, setSnackBar] = useState({
-    open: false,
-    message: "",
-    severity: "",
-  });
-  const { handleSubmit, control, reset } = useForm();
+  const [isLoading, setIsloading] = useState(true);
+  const [baseResults, setBaseResults] = useState();
+  const [results, setResults] = useState(null);
 
-  // TODO:
-  // TODO:
-  // SEARCH AND DISPLAY ALL USERS ON MOUNT
-  // FILTER BY NAME, ID OR LASTNAME
   useEffect(() => {
     let isSubscribed = true;
-    const timer = setTimeout(() => {
-      
+    const timer = setTimeout(async () => {
+      const usersData = await usersSearch();
       if (isSubscribed) {
+        setBaseResults(usersData);
+        setResults(usersData);
         setIsloading(false);
       }
-    }, 2000);
+    }, 1000);
     return () => {
       isSubscribed = false;
       clearTimeout(timer);
     };
   }, []);
-  
-  const resetForm = () => {
-    reset();
-    setIsloading(false);
-  };
 
-  const snackBarCloseHandler = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackBar({ open: false });
-  };
-
-  const searchUserHandler = async (data, event) => {
-    try {
-      event.preventDefault();
-      setIsloading(true);
-
-      const queryResultsArray = await compoundSearchDB(data.parameter, "users");
-
-      const resultsArray = [];
-      if (queryResultsArray === undefined || queryResultsArray.length === 0) {
-        setIsloading(false);
-        setResults();
-        setSnackBar({
-          open: true,
-          message: "No user found.",
-          severity: "error",
-        });
-      } else {
-        queryResultsArray.forEach((doc) => {
-          resultsArray.push(doc.data());
-          resetForm();
-        });
-        setResults(resultsArray);
+  const searchUserHandler = (event) => {
+    const filteredData = baseResults.filter((user) => {
+      if (event.target.value.trim().length === 0) {
+        return user;
       }
-    } catch (error) {
-      console.log(error.message);
-    }
+      if (user.firstName.includes(event.target.value.trim().toUpperCase())) {
+        return user;
+      }
+      if (user.lastName.includes(event.target.value.trim().toUpperCase())) {
+        return user;
+      }
+      if (user.id.includes(event.target.value.trim())) {
+        return user;
+      }
+      if (user.role.includes(event.target.value.trim().toUpperCase())) {
+        return user;
+      }
+    });
+    setResults(filteredData);
   };
 
   return (
     <BasePage
-    color={baseData.color}
-    Icon={baseData.Icon}
-    title={baseData.title}
-    subtitle={baseData.subtitle}
-  >
-    <Box
-      component="form"
-      onSubmit={handleSubmit(searchUserHandler)}
-      sx={{ mt: 3 }}
+      color={baseData.color}
+      Icon={baseData.Icon}
+      title={baseData.title}
+      subtitle={baseData.subtitle}
     >
-      <Grid container spacing={1} rowSpacing={0.1}>
-        <Grid item xs={12} sm={12}>
-          <InputText control={control} name="Parameter" fullWidth required />
+      <Box sx={{ mt: 3 }}>
+        <Grid container spacing={1} rowSpacing={0.1}>
+          <Grid xs={12} sm={12}>
+            <TextField
+              onChange={searchUserHandler}
+              label="Parameter"
+              fullWidth
+              required
+            />
+          </Grid>
         </Grid>
-      </Grid>
-      <LoadingButtonComp
-        loading={isLoading}
-        variant="contained"
-        color={baseData.color}
-      >
-        Search
-      </LoadingButtonComp>
-    </Box>
-    {results && <TableComp type="SearchUser" dataInfo={results} />}
-    <Snackbar
-      open={snackBar.open}
-      autoHideDuration={2000}
-      onClose={snackBarCloseHandler}
-    >
-      <AlertComponent
-        onClose={snackBarCloseHandler}
-        severity={snackBar.severity}
-        sx={{ width: "100%" }}
-      >
-        {snackBar.message}
-      </AlertComponent>
-    </Snackbar>
-  </BasePage>
+        {isLoading && (
+          <Grid sx={{ mt: 3 }} sm={12}>
+            <LinearProgress />
+          </Grid>
+        )}
+      </Box>
+
+      {!isLoading && <TableComp type="SearchUser" dataInfo={results} />}
+    </BasePage>
   );
 }
 

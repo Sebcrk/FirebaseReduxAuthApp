@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import DownloadIcon from "@mui/icons-material/Download";
 import ReactExport from "react-export-excel";
 
-import { simpleSearch } from "../../utils/searchDB";
+import { reportsSearch } from "../../utils/searchDB";
 import AlertComponent from "../../components/UI/AlertComponent";
 import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
 import BasePage from "../../components/UI/Wrappers/BasePage";
@@ -75,7 +75,7 @@ function Reports() {
     setIsloading(true);
 
     try {
-      const reportData = await simpleSearch(report, "guests");
+      const reportData = await reportsSearch(report, "guests");
       setResult(reportData);
       setDownload(true);
       setIsloading(false);

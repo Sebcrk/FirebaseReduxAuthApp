@@ -1,5 +1,13 @@
 import { db } from "../firebase";
-import {  doc, getDoc, collection, getDocs, where, query, orderBy } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  collection,
+  getDocs,
+  where,
+  query,
+  orderBy,
+} from "firebase/firestore";
 import {
   startOfToday,
   startOfWeek,
@@ -46,11 +54,11 @@ export const compoundSearchDB = async (parameter, collectionID) => {
 
     return queryResultsArray;
   } catch (error) {
-    console.log(error.message);
+    return console.error(error.message);
   }
 };
 
-export const simpleSearch = async (parameter, collectionID) => {
+export const reportsSearch = async (parameter, collectionID) => {
   try {
     const collectionRef = collection(db, collectionID);
     let start;
@@ -106,23 +114,37 @@ export const simpleSearch = async (parameter, collectionID) => {
     });
     return results;
   } catch (error) {
-    console.error(error.message);
-    return error.message;
+    return console.error(error.message);
   }
 };
 
 export const profileSearch = async (param) => {
-try {
-  const docRef = doc(db, "users", param);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    return docSnap.data()
-  } else {
-    // doc.data() will be undefined in this case
-    console.log("No such document!");
-    return "No such document!"
+  try {
+    const docRef = doc(db, "users", param);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      return docSnap.data();
+    } else {
+      // doc.data() will be undefined in this case
+      console.log("No such document!");
+      return "No such document!";
+    }
+  } catch (error) {
+    return console.error(error.message);
   }
-} catch (error) {
-  return error.message
-}
-}
+};
+
+export const usersSearch = async () => {
+  try {
+    const collectionRef = collection(db, "users");
+
+    const querySnapshot = await getDocs(collectionRef);
+    const results = [];
+    querySnapshot.forEach((doc) => {
+      results.push({ ...doc.data() });
+    });
+    return results;
+  } catch (error) {
+    return console.error(error.message);
+  }
+};
