@@ -4,7 +4,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
-import { Box, CardActionArea } from "@mui/material";
+import { Box, CardActionArea, LinearProgress } from "@mui/material";
 import Grid from "@mui/material/Unstable_Grid2";
 import Snackbar from "@mui/material/Snackbar";
 import VerifiedUserIcon from "@mui/icons-material/VerifiedUser";
@@ -25,7 +25,7 @@ const baseData = {
 function Validation() {
   const occupancy = useSelector((state) => state.guestInfo.occupancy);
   const maxOccupancy = useSelector((state) => state.guestInfo.maxOccupancy);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [isAutomatic, setIsAutomatic] = useState(false);
   const [isManual, setIsManual] = useState(false);
   const [data, setData] = useState();
@@ -36,6 +36,7 @@ function Validation() {
   });
 
   const autoValidationHandler = async () => {
+    setIsLoading(true);
     try {
       const res = await fetch("http://localhost:3001/projects");
       if (res.status === 205) {
@@ -57,10 +58,11 @@ function Validation() {
       });
       console.log(error.message);
     }
+    setIsLoading(false);
   };
 
-
   const manualValidationHandler = async () => {
+    setIsLoading(true);
     try {
       const res = await fetch("http://localhost:3001/manualValidation");
       if (res.status === 205) {
@@ -78,11 +80,13 @@ function Validation() {
     } catch (error) {
       setSnackBar({
         open: true,
-        message: error.message,
+        message: error.message + ". Please enter data manually.",
         severity: "error",
       });
+      setIsManual(true);
       console.log(error.message);
     }
+    setIsLoading(false);
   };
 
   const snackBarCloseHandler = (event, reason) => {
@@ -97,7 +101,7 @@ function Validation() {
       color={baseData.color}
       Icon={baseData.Icon}
       title={baseData.title}
-      subtitle={isAutomatic ? "Auto" : (isManual && "Manual")}
+      subtitle={isAutomatic ? "Auto" : isManual && "Manual"}
       maxWidth="sm"
     >
       {occupancy >= maxOccupancy && (
@@ -105,8 +109,10 @@ function Validation() {
           MAXIMUM OCCUPANCY REACHED. NO MORE PEOPLE ALLOWED.
         </Typography>
       )}
+
       {occupancy < maxOccupancy && !isAutomatic && !isManual && (
         <Box component="div" sx={{ p: 2, flexGrow: 1, overflow: "auto" }}>
+          {isLoading && <LinearProgress />}
           <Grid sx={{ mt: 2 }} container spacing={4} rowSpacing={4}>
             <Grid xs={12} sm={12} md={6} lg={6}>
               <Card
@@ -115,10 +121,10 @@ function Validation() {
                   display: "flex",
                   flexDirection: "column",
                   height: 320,
-                  borderRadius: "20px"
+                  borderRadius: "20px",
                 }}
               >
-                <CardActionArea onClick={autoValidationHandler}>
+                <CardActionArea disabled={isLoading} onClick={autoValidationHandler}>
                   <CardMedia sx={{ height: "70%" }}>
                     <CachedIcon
                       sx={{
@@ -148,10 +154,10 @@ function Validation() {
                   display: "flex",
                   flexDirection: "column",
                   height: 320,
-                  borderRadius: "20px"
+                  borderRadius: "20px",
                 }}
               >
-                <CardActionArea onClick={manualValidationHandler}>
+                <CardActionArea disabled={isLoading} onClick={manualValidationHandler}>
                   <CardMedia sx={{ height: "70%" }}>
                     <KeyboardIcon
                       sx={{

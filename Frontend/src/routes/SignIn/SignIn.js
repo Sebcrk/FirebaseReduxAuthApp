@@ -1,10 +1,8 @@
 import * as React from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { auth } from "../../firebase";
 import { useNavigate, Link } from "react-router-dom";
-import { authActions } from "../../store/auth-slice";
 import { useForm } from "react-hook-form";
 
 import Avatar from "@mui/material/Avatar";
@@ -14,7 +12,7 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import Copyright from "../../components/layout/Copyright";
+import Copyright from "../../components/Layout/Copyright";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Fingerprint from "@mui/icons-material/Fingerprint";
 

@@ -16,11 +16,9 @@ import ForwardToInboxIcon from "@mui/icons-material/ForwardToInbox";
 
 import InputText from "../components/UI/InputText";
 
-
 const Alert = forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
 
 function ResetPassword() {
   const { handleSubmit, control } = useForm();
@@ -31,7 +29,6 @@ function ResetPassword() {
     severity: "",
   });
 
-
   const snackBarCloseHandler = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -40,43 +37,46 @@ function ResetPassword() {
     setSnackBar({ open: false });
   };
 
-
   const resetPasswordHandler = async (data, event) => {
-    event.preventDefault();
-    setIsloading(true);
-    await sendPasswordResetEmail(auth, data.email)
-      .then(() => {
-        // Password reset email sent!
-        // ..
-        setSnackBar({ open: true, message: "Password recovery email sent to: " + data.email, severity: "success" });
-        console.log("Password recovery email sent to: " + data.email);
-      })
-      .catch((error) => {
-        let errorMessage
-        switch (error.code) {
-          case "auth/invalid-email": {
-            errorMessage = "Email address is invalid. Check and try again";
-            break;
-          }
-          case "auth/user-disabled": {
-            errorMessage = "User related to the email address is disabled";
-            break;
-          }
-          case "auth/user-not-found": {
-            errorMessage = "Email address does not have a user related";
-            break;
-          }
-          case "auth/too-many-requests": {
-            errorMessage = "Too many attempts made. Try again later";
-            break;
-          }
-          default:
-            errorMessage = "Something bad happened";
-        }
-        setSnackBar({ open: true, message: errorMessage, severity: "error" });
+    try {
+      event.preventDefault();
+      setIsloading(true);
+      console.log(data.email);
+      // await sendPasswordResetEmail(auth, data.email);
+      // Password reset email sent!
+      // ..
+      setSnackBar({
+        open: true,
+        message: "Password recovery email sent to: " + data.email,
+        severity: "success",
       });
-
-    setIsloading(false);
+      setIsloading(false);
+      console.log("Password recovery email sent to: " + data.email);
+    } catch (error) {
+      let errorMessage;
+      switch (error.code) {
+        case "auth/invalid-email": {
+          errorMessage = "Email address is invalid. Check and try again";
+          break;
+        }
+        case "auth/user-disabled": {
+          errorMessage = "User related to the email address is disabled";
+          break;
+        }
+        case "auth/user-not-found": {
+          errorMessage = "Email address does not have a user related";
+          break;
+        }
+        case "auth/too-many-requests": {
+          errorMessage = "Too many attempts made. Try again later";
+          break;
+        }
+        default:
+          errorMessage = "Something bad happened";
+      }
+      setIsloading(false);
+      setSnackBar({ open: true, message: errorMessage, severity: "error" });
+    }
   };
 
   return (

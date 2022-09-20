@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 
@@ -34,6 +34,24 @@ function SearchUser() {
   });
   const { handleSubmit, control, reset } = useForm();
 
+  // TODO:
+  // TODO:
+  // SEARCH AND DISPLAY ALL USERS ON MOUNT
+  // FILTER BY NAME, ID OR LASTNAME
+  useEffect(() => {
+    let isSubscribed = true;
+    const timer = setTimeout(() => {
+      
+      if (isSubscribed) {
+        setIsloading(false);
+      }
+    }, 2000);
+    return () => {
+      isSubscribed = false;
+      clearTimeout(timer);
+    };
+  }, []);
+  
   const resetForm = () => {
     reset();
     setIsloading(false);

@@ -210,6 +210,7 @@ export default function Layout(props) {
             }}
           >
             <IconButton
+            disabled={!isAuth}
               edge="start"
               color="inherit"
               aria-label="open drawer"
@@ -219,8 +220,7 @@ export default function Layout(props) {
                 ...(open && { display: "none" }),
               }}
             >
-              <MenuIcon 
-              fontSize="large"/>
+              <MenuIcon fontSize="large" />
             </IconButton>
             <Typography
               component="h1"
@@ -252,16 +252,18 @@ export default function Layout(props) {
             </Toolbar>
             <Divider />
             <List component="nav">
-              <MainListItems open={open} onToggleDrawer={toggleDrawer}/>
+              <MainListItems open={open} onToggleDrawer={toggleDrawer} />
               <Divider sx={{ my: 1 }} />
-              {user.isAdmin && <AdminListItems onToggleDrawer={toggleDrawer} open={open} />}
+              {user.isAdmin && (
+                <AdminListItems onToggleDrawer={toggleDrawer} open={open} />
+              )}
             </List>
           </Drawer>
         )}
         <Box
           component="main"
           sx={{
-            ml: 9,
+            ml: isAuth && 9,
             flexGrow: 1,
             height: "100vh",
             overflow: "auto",

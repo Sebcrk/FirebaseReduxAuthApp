@@ -28,7 +28,6 @@ const UserProfile = () => {
     let isSubscribed = true
     const timer = setTimeout(async () => {
       const profileData = await profileSearch(user.id);
-      console.log(profileData);
       setData(profileData);
       setLoading(false);
     }, 1000);
@@ -57,7 +56,7 @@ const UserProfile = () => {
                 variant="h5"
                 component="div"
               >
-                My Profile
+                Profile
               </Typography>
             </Card>
 
