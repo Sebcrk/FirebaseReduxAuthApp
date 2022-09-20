@@ -1,8 +1,73 @@
-.profile {
-  margin: 5rem auto;
+.header {
+  margin: 2rem auto;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
-  width: 40rem;
-  border-radius: 8px;
+  width: 20%;
+  height: "2px";
+  border-radius: 20px;
   padding: 1rem;
   text-align: center;
+  background: linear-gradient(
+    to bottom left,
+    hsl(330.86, 29.91%, 77.06%) 0%,
+    hsl(317.63, 24.19%, 75.17%) 9.4%,
+    hsl(298.74, 19.4%, 73.27%) 17.2%,
+    hsl(279.68, 22.91%, 73.12%) 23.7%,
+    hsl(265.09, 26.44%, 72.95%) 29.3%,
+    hsl(253.44, 29.97%, 72.77%) 34.1%,
+    hsl(243.79, 33.47%, 72.56%) 38.5%,
+    hsl(235.83, 38.59%, 71.59%) 42.7%,
+    hsl(230.14, 44.61%, 69.91%) 46.9%,
+    hsl(225.88, 50.11%, 68.12%) 51.4%,
+    hsl(222.47, 55.12%, 66.19%) 56.5%,
+    hsl(219.61, 59.66%, 64.1%) 62.5%,
+    hsl(217.09, 63.78%, 61.83%) 69.5%,
+    hsl(214.75, 67.52%, 59.31%) 78%,
+    hsl(212.46, 70.94%, 56.44%) 88%,
+    hsl(210, 74.17%, 52.94%) 100%
+  );
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.logo {
+  width: 20%;
+}
+.title {
+  font-weight: bold;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 2rem auto;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
+  width: 60%;
+  border-radius: 20px;
+  text-align: center;
+  background: linear-gradient(
+    to bottom left,
+    hsl(330.86, 29.91%, 77.06%) 0%,
+    hsl(317.63, 24.19%, 75.17%) 9.4%,
+    hsl(298.74, 19.4%, 73.27%) 17.2%,
+    hsl(279.68, 22.91%, 73.12%) 23.7%,
+    hsl(265.09, 26.44%, 72.95%) 29.3%,
+    hsl(253.44, 29.97%, 72.77%) 34.1%,
+    hsl(243.79, 33.47%, 72.56%) 38.5%,
+    hsl(235.83, 38.59%, 71.59%) 42.7%,
+    hsl(230.14, 44.61%, 69.91%) 46.9%,
+    hsl(225.88, 50.11%, 68.12%) 51.4%,
+    hsl(222.47, 55.12%, 66.19%) 56.5%,
+    hsl(219.61, 59.66%, 64.1%) 62.5%,
+    hsl(217.09, 63.78%, 61.83%) 69.5%,
+    hsl(214.75, 67.52%, 59.31%) 78%,
+    hsl(212.46, 70.94%, 56.44%) 88%,
+    hsl(210, 74.17%, 52.94%) 100%
+  );
+}
+
+@media screen and (max-width: 510px) {
+  .content {
+    flex-direction: column;
+  }
 }

@@ -102,12 +102,6 @@ const [anchorEl, setAnchorEl] = React.useState(null);
           <Avatar /> Profile
         </MenuItem>
         <Divider />
-        <MenuItem>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          Settings
-        </MenuItem>
         <MenuItem aria-label="logout" onClick={logoutHandler}>
           <ListItemIcon >
             <Logout color='error' fontSize="small" />

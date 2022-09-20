@@ -1,5 +1,5 @@
 import { db } from "../firebase";
-import { collection, getDocs, where, query, orderBy } from "firebase/firestore";
+import {  doc, getDoc, collection, getDocs, where, query, orderBy } from "firebase/firestore";
 import {
   startOfToday,
   startOfWeek,
@@ -106,6 +106,23 @@ export const simpleSearch = async (parameter, collectionID) => {
     });
     return results;
   } catch (error) {
+    console.error(error.message);
     return error.message;
   }
 };
+
+export const profileSearch = async (param) => {
+try {
+  const docRef = doc(db, "users", param);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data()
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+    return "No such document!"
+  }
+} catch (error) {
+  return error.message
+}
+}

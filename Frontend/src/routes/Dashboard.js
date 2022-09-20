@@ -28,12 +28,14 @@ export default function Dashboard() {
 
   useEffect(() => {
     let isSubscribed = true;
-
-    if (guestData) {
-      setLoading(false);
-    }
+    const timer = setTimeout(() => {
+      if (guestData && isSubscribed) {
+        setLoading(false);
+      }
+    }, 2000);
     return () => {
       isSubscribed = false;
+      clearTimeout(timer);
     };
   }, [guestData]);
 
@@ -60,7 +62,7 @@ export default function Dashboard() {
                       display: "flex",
                       flexDirection: "column",
                       height: 340,
-                      borderRadius: "20px"
+                      borderRadius: "20px",
                     }}
                   >
                     <DashboardItem

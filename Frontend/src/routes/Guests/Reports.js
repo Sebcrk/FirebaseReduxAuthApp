@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import BarChartIcon from "@mui/icons-material/BarChart";
@@ -48,7 +47,7 @@ const reports = [
   },
 ];
 
-function Reports(props) {
+function Reports() {
   const [result, setResult] = useState([]);
   const [report, setReport] = useState("");
   const [isLoading, setIsloading] = useState(false);
@@ -59,8 +58,6 @@ function Reports(props) {
     severity: "",
   });
 
-  const { handleSubmit, control, reset } = useForm();
-
   const snackBarCloseHandler = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -69,17 +66,16 @@ function Reports(props) {
   };
 
   const handleChangeReport = (e) => {
-    setReport(e.target.value)
-    setDownload(false)
+    setReport(e.target.value);
+    setDownload(false);
   };
 
-  const generateReport = async (data, event) => {
+  const generateReport = async (event) => {
     event.preventDefault();
     setIsloading(true);
 
     try {
       const reportData = await simpleSearch(report, "guests");
-      console.log(reportData);
       setResult(reportData);
       setDownload(true);
       setIsloading(false);
@@ -95,36 +91,24 @@ function Reports(props) {
       title={baseData.title}
       subtitle={baseData.subtitle}
     >
-      <Box
-        component="form"
-        onSubmit={handleSubmit(generateReport)}
-        sx={{ mt: 3 }}
-      >
+      <Box component="form" onSubmit={generateReport} sx={{ mt: 3 }}>
         <Grid container spacing={1} rowSpacing={0.1}>
           <Grid item xs={12} sm={12}>
-            <Controller
-              name="report"
-              control={control}
-              defaultValue=""
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  select
-                  required
-                  value={report}
-                  onChange={handleChangeReport}
-                  id="reports"
-                  label="Select report"
-                  helperText="Please select the report you want to generate"
-                >
-                  {reports.map((option) => (
-                    <MenuItem key={option.id} value={option.value}>
-                      {option.title}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
-            />
+            <TextField
+              select
+              required
+              value={report}
+              onChange={handleChangeReport}
+              id="reports"
+              label="Select report"
+              helperText="Please select the report you want to generate"
+            >
+              {reports.map((option) => (
+                <MenuItem key={option.id} value={option.value}>
+                  {option.title}
+                </MenuItem>
+              ))}
+            </TextField>
           </Grid>
         </Grid>
         {!download && (
@@ -153,16 +137,10 @@ function Reports(props) {
               <ExcelColumn label="Last Name" value="lastName" />
               <ExcelColumn label="ID" value="id" />
               <ExcelColumn label="Role" value="role" />
-              <ExcelColumn
-                label="Date of Entry"
-                value="dateOfEntry"
-              />
+              <ExcelColumn label="Date of Entry" value="dateOfEntry" />
               <ExcelColumn label="Entrance #" value="entrance" />
               <ExcelColumn label="Destination" value="destination" />
-              <ExcelColumn
-                label="Date of Birth"
-                value="dateOfBirth"
-              />
+              <ExcelColumn label="Date of Birth" value="dateOfBirth" />
             </ExcelSheet>
           </ExcelFile>
         )}
