@@ -84,23 +84,7 @@ export default function SignIn() {
             required
           />
           <Collapse in={alert.open}>
-            <Alert
-              action={
-                <IconButton
-                  aria-label="alert"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setAlert(false);
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              severity="error"
-            >
-              {alert.message}
-            </Alert>
+            <Alert onClose={() => setAlert({open: false})} severity="error">{alert.message}</Alert>
           </Collapse>
           <LoadingButton
             type="submit"
