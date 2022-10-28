@@ -27,7 +27,6 @@ function App() {
     open: false,
   });
 
-  const itemsSize = 240;
 
   const start = startOfToday();
   const end = endOfDay(start);
@@ -69,7 +68,6 @@ function App() {
                 },
               })
             );
-            // console.log("User does NOT has Admin privileges");
           }
         });
 

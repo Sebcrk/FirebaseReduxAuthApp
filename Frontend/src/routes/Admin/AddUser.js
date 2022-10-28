@@ -20,7 +20,6 @@ const dataArray = [
   { name: "Last Name", sm: 6, type: "text" },
   { name: "ID", sm: 6, type: "number" },
   { name: "Date of birth", sm: 6, type: "date" },
-  // { name: "Gender", sm: 6, type: "select" },
   { name: "Email", sm: 12, type: "email" },
   { name: "Password", sm: 12, type: "password" },
 ];

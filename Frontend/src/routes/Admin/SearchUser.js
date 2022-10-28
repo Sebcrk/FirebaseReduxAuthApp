@@ -5,7 +5,7 @@ import Grid from "@mui/material/Unstable_Grid2";
 import FaceIcon from "@mui/icons-material/Face";
 import { LinearProgress, TextField } from "@mui/material";
 import TableComp from "../../components/UI/TableComp";
-import { usersSearch } from "../../utils/searchDB";
+import { usersSearch } from "../../helpers/searchDB";
 import BasePage from "../../components/UI/Wrappers/BasePage";
 
 const baseData = {

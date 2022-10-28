@@ -2,7 +2,6 @@ import { Router } from "express";
 import {
   getFirstProject,
   getProject,
-  getProjectTasks,
   createProject,
   updateProject,
   deleteProject,
@@ -17,7 +16,6 @@ router.post("/projects", createProject);
 
 
 router.get("/projects/:id", getProject);
-router.get("/projects/:id/tasks", getProjectTasks);
 router.put("/projects/:id", updateProject);
 
 export default router;

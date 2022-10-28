@@ -8,7 +8,7 @@ import TextField from "@mui/material/TextField";
 import DownloadIcon from "@mui/icons-material/Download";
 import ReactExport from "react-export-excel";
 
-import { reportsSearch } from "../../utils/searchDB";
+import { reportsSearch } from "../../helpers/searchDB";
 import AlertComponent from "../../components/UI/AlertComponent";
 import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
 import BasePage from "../../components/UI/Wrappers/BasePage";

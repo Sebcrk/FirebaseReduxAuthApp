@@ -1,7 +1,7 @@
 import classes from "./UserProfile.module.css";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { profileSearch } from "../utils/searchDB";
+import { profileSearch } from "../helpers/searchDB";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import CardMedia from "@mui/material/CardMedia";
@@ -11,6 +11,7 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Logo from "../components/resources/boy-dynamic-color.png";
+
 const bull = (
   <Box
     component="span"

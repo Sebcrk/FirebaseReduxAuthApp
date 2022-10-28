@@ -5,16 +5,12 @@ import Grid from "@mui/material/Grid";
 import RecentActorsIcon from "@mui/icons-material/RecentActors";
 import Snackbar from "@mui/material/Snackbar";
 
-
 import AlertComponent from "../../components/UI/AlertComponent";
 import TableComp from "../../components/UI/TableComp";
 import LoadingButtonComp from "../../components/UI/LoadingButtonComp";
-import {compoundSearchDB} from "../../utils/searchDB";
+import { compoundSearchDB } from "../../helpers/searchDB";
 import InputText from "../../components/UI/InputText";
 import BasePage from "../../components/UI/Wrappers/BasePage";
-
-
-
 
 const baseData = {
   color: "primary",
@@ -50,7 +46,10 @@ function SearchGuest() {
       event.preventDefault();
       setIsloading(true);
 
-      const queryResultsArray = await compoundSearchDB(data.parameter, "guests");
+      const queryResultsArray = await compoundSearchDB(
+        data.parameter,
+        "guests"
+      );
 
       const resultsArray = [];
       if (queryResultsArray === undefined || queryResultsArray.length === 0) {

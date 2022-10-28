@@ -1,11 +1,8 @@
-import { lazy, Suspense, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
-import ProtectedRoute from "./helpers/ProtectedRoute";
-import { useSelector } from "react-redux";
-import { auth } from "./firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import { lazy, Suspense } from "react";
+import { Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./hoc/ProtectedRoute";
 
-import RedirectAuthUser from "./helpers/RedirectAuthUser";
+import RedirectAuthUser from "./hoc/RedirectAuthUser";
 import LoadingSpinner from "./components/UI/LoadingSpinner";
 import Counter from "./routes/counter/Counter";
 import SignIn from "./routes/SignIn/SignIn";
